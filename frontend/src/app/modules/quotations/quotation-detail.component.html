@@ -1,0 +1,197 @@
+<div class="container-fluid" *ngIf="quotation">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="mb-0">Cotação #{{ quotation.id?.substring(0, 8) }}</h4>
+      <span class="badge mt-2" [ngClass]="'bg-primary'">{{ quotation.status }}</span>
+    </div>
+    <a routerLink="/quotations" class="btn btn-outline-secondary">← Voltar</a>
+  </div>
+
+  <div class="row">
+    <!-- Dados do Cliente -->
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Dados do Cliente</h6>
+        </div>
+        <div class="card-body">
+          <p><strong>Nome:</strong> {{ quotation.installer?.name }}</p>
+          <p><strong>WhatsApp:</strong> {{ quotation.installer?.whatsappNumber }}</p>
+          <p><strong>Cidade:</strong> {{ quotation.locationCity }}/{{ quotation.locationState }}</p>
+          <p><strong>Origem:</strong> <span class="badge bg-info">{{ quotation.originChannel }}</span></p>
+        </div>
+      </div>
+
+      <!-- Chat History -->
+      <div class="card mt-3" *ngIf="chatHistory.length > 0">
+        <div class="card-header">
+          <h6 class="mb-0">Histórico de Conversa</h6>
+        </div>
+        <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+          <div *ngFor="let msg of chatHistory"
+               class="chat-message"
+               [ngClass]="msg.direction === 'INBOUND' ? 'inbound' : 'outbound'">
+            <small class="d-block mb-1 opacity-75">{{ msg.fromRole }} - {{ msg.createdAt | date:'HH:mm' }}</small>
+            {{ msg.content }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dados da Solicitação -->
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Detalhes da Solicitação</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Tipo de ambiente:</strong> {{ quotation.environmentType || '-' }}</p>
+              <p><strong>Área (m²):</strong> {{ quotation.environmentAreaM2 || '-' }}</p>
+              <p><strong>Voltagem:</strong> {{ quotation.voltagePreference || '-' }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Tipo preferido:</strong> {{ quotation.productTypePreference || '-' }}</p>
+              <p><strong>Marca preferida:</strong> {{ quotation.brandPreference || 'Qualquer' }}</p>
+              <p><strong>Prazo desejado:</strong> {{ quotation.deadlineDays ? quotation.deadlineDays + ' dias' : '-' }}</p>
+            </div>
+          </div>
+          <hr>
+          <p><strong>Descrição:</strong></p>
+          <p>{{ quotation.description }}</p>
+        </div>
+      </div>
+
+      <!-- Produtos Sugeridos -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h6 class="mb-0">Produtos Sugeridos</h6>
+        </div>
+        <div class="card-body">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>BTU</th>
+                <th>Tipo</th>
+                <th>Voltagem</th>
+                <th>Qtd</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of quotation.items">
+                <td>{{ item.airConditionerModel?.brand }}</td>
+                <td>{{ item.airConditionerModel?.modelName }}</td>
+                <td>{{ item.airConditionerModel?.btuCapacity }}</td>
+                <td>{{ item.airConditionerModel?.type }}</td>
+                <td>{{ item.airConditionerModel?.voltage }}</td>
+                <td>{{ item.quantity }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Seleção de Fornecedores -->
+      <div class="card mt-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h6 class="mb-0">Fornecedores</h6>
+          <button class="btn btn-primary btn-sm" (click)="dispatchSuppliers()" [disabled]="selectedSuppliers.size === 0">
+            Disparar Cotações ({{ selectedSuppliers.size }})
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3" *ngFor="let supplier of suppliers">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [id]="'sup-' + supplier.id"
+                  (change)="toggleSupplier(supplier.id)"
+                  [checked]="selectedSuppliers.has(supplier.id)">
+                <label class="form-check-label" [for]="'sup-' + supplier.id">
+                  {{ supplier.name }}
+                  <small class="d-block text-muted">{{ supplier.averageLeadTimeDays }} dias</small>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparativo de Cotações -->
+      <div class="card mt-3" *ngIf="supplierQuotes.length > 0">
+        <div class="card-header">
+          <h6 class="mb-0">Comparativo de Cotações dos Fornecedores</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4" *ngFor="let quote of supplierQuotes">
+              <div class="card quote-card mb-3"
+                   [class.selected]="selectedQuote?.id === quote.id"
+                   (click)="selectQuote(quote)">
+                <div class="card-body">
+                  <h6>{{ quote.supplier?.name }}</h6>
+                  <hr>
+                  <p class="mb-1"><strong>Preço Total:</strong> <span class="text-success">R$ {{ quote.totalPrice?.toFixed(2) }}</span></p>
+                  <p class="mb-1"><strong>Preço Unit:</strong> R$ {{ quote.unitPrice?.toFixed(2) }}</p>
+                  <p class="mb-1"><strong>Prazo:</strong> {{ quote.leadTimeDays }} dias</p>
+                  <p class="mb-1"><strong>Estoque:</strong> {{ quote.stockAvailable ? '✅ Disponível' : '❌ Indisponível' }}</p>
+                  <p class="mb-1"><strong>Pagamento:</strong> {{ quote.paymentConditions }}</p>
+                  <p class="mb-1"><strong>Garantia:</strong> {{ quote.warrantyMonths }} meses</p>
+                  <span class="badge" [ngClass]="quote.status === 'RECEIVED' ? 'bg-success' : 'bg-warning'">
+                    {{ quote.status }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proposta ao Cliente -->
+      <div class="card mt-3" *ngIf="selectedQuote">
+        <div class="card-header">
+          <h6 class="mb-0">Proposta ao Instalador</h6>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label"><strong>Margem de Lucro (%)</strong></label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="marginPercent"
+                (ngModelChange)="generateProposalMessage()"
+                min="0"
+                max="100">
+            </div>
+            <div class="col-md-6">
+              <div class="mt-4">
+                <p class="mb-1"><strong>Custo Fornecedor:</strong> R$ {{ selectedQuote.totalPrice?.toFixed(2) }}</p>
+                <p class="mb-1"><strong>Margem:</strong> R$ {{ calculateMarginValue().toFixed(2) }} ({{ marginPercent }}%)</p>
+                <p class="mb-0"><strong class="text-success">Preço Final:</strong> <span class="text-success fs-5">R$ {{ calculateFinalPrice().toFixed(2) }}</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"><strong>Mensagem da Proposta (WhatsApp)</strong></label>
+            <textarea
+              class="form-control"
+              rows="12"
+              [(ngModel)]="proposalMessage"
+              placeholder="Edite a mensagem que será enviada ao cliente..."></textarea>
+          </div>
+
+          <button class="btn btn-success btn-lg w-100" (click)="createAndSendOrder()">
+            📱 Enviar Proposta via WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

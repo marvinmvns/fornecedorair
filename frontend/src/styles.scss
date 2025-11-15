@@ -1,0 +1,74 @@
+// Bootstrap and custom styles
+@import '~bootstrap/scss/bootstrap';
+
+// Bsinx-inspired color scheme
+:root {
+  --primary-color: #4361ee;
+  --secondary-color: #3a0ca3;
+  --success-color: #06d6a0;
+  --danger-color: #ef476f;
+  --warning-color: #ffd60a;
+  --info-color: #4cc9f0;
+  --dark-color: #212529;
+  --light-color: #f8f9fa;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+}
+
+// Card styles
+.card {
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  background-color: white;
+  border-bottom: 1px solid #e9ecef;
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+}
+
+// Badge styles
+.badge {
+  padding: 0.5em 0.8em;
+  font-weight: 500;
+}
+
+// Button styles
+.btn {
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-weight: 500;
+}
+
+// Sidebar
+.sidebar {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+}
+
+// Main content
+.main-content {
+  padding: 2rem;
+}
+
+// Table styles
+.table {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+// Status badges
+.status-open { background-color: var(--info-color); }
+.status-waiting { background-color: var(--warning-color); color: #333; }
+.status-received { background-color: var(--success-color); }
+.status-sent { background-color: var(--primary-color); }
+.status-closed { background-color: var(--dark-color); }
