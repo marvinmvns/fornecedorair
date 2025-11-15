@@ -1,15 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { QuotationRequest } from './quotation-request.entity';
+import { Tenant } from './tenant.entity';
 
 @Entity('installers')
 export class Installer {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ManyToOne(() => Tenant, tenant => tenant.installers)
+  @JoinColumn({ name: 'tenant_id' })
+  tenant: Tenant;
+
+  @Column({ name: 'tenant_id' })
+  tenantId: string;
+
   @Column()
   name: string;
 
-  @Column({ unique: true })
+  @Column()
   whatsappNumber: string;
 
   @Column({ nullable: true })
