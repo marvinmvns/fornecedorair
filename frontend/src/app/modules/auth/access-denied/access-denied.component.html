@@ -1,0 +1,27 @@
+<div class="access-denied-container">
+  <div class="access-denied-card">
+    <div class="icon-container">
+      <i class="bi bi-shield-lock text-danger" style="font-size: 80px;"></i>
+    </div>
+
+    <h1>Acesso Negado</h1>
+    <p class="lead">Você não tem permissão para acessar esta página.</p>
+
+    <div class="actions">
+      <button class="btn btn-primary" (click)="goBack()">
+        <i class="bi bi-arrow-left me-2"></i>
+        Voltar ao Dashboard
+      </button>
+      <button class="btn btn-outline-secondary ms-2" (click)="logout()">
+        <i class="bi bi-box-arrow-right me-2"></i>
+        Sair
+      </button>
+    </div>
+
+    <div class="info mt-4">
+      <p class="text-muted small">
+        Se você acredita que deveria ter acesso a esta página, entre em contato com o administrador do sistema.
+      </p>
+    </div>
+  </div>
+</div>
