@@ -8,14 +8,14 @@ import { ChatMessage } from '../../../domain/entities/chat-message.entity';
 import { QuotationsService } from '../../../application/services/quotations.service';
 import { QuotationsController } from '../../controllers/quotations.controller';
 import { WebhooksController } from '../../controllers/webhooks.controller';
-import { CatalogModule } from '../catalog/catalog.module';
+import { AirConditionerModelsModule } from '../air-conditioner-models/air-conditioner-models.module';
 import { LlmModule } from '../llm/llm.module';
 import { WhatsappModule } from '../whatsapp/whatsapp.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([QuotationRequest, QuotationItem, Installer, SupplierQuote, ChatMessage]),
-    CatalogModule,
+    AirConditionerModelsModule,
     LlmModule,
     WhatsappModule,
   ],

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Patch, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Patch, Body, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { IsString, IsNumber, IsEnum, IsBoolean, IsOptional, Min } from 'class-validator';
 import {
@@ -147,8 +147,19 @@ export class AirConditionerModelsController {
 
   @Get()
   @ApiOperation({ summary: 'List air conditioner models' })
-  findAll() {
-    return this.acModelsService.findAll();
+  findAll(
+    @Query('brand') brand?: string,
+    @Query('type') type?: string,
+    @Query('minBtu') minBtu?: number,
+    @Query('maxBtu') maxBtu?: number,
+  ) {
+    return this.acModelsService.findAll({ brand, type, minBtu, maxBtu });
+  }
+
+  @Get('recommend')
+  @ApiOperation({ summary: 'Get recommended models by area' })
+  findRecommended(@Query('area') area: number) {
+    return this.acModelsService.findRecommendedByArea(area);
   }
 
   @Get(':id')

@@ -2,6 +2,28 @@
 
 Sistema completo de gestão de cotações de ar-condicionado para distribuidores, com integração WhatsApp e LLM.
 
+## 🚀 Últimas Atualizações (2025-11-17)
+
+### Otimizações e Limpeza de Código
+
+**Backend:**
+- ✅ **Consolidação de módulos duplicados**: Removida duplicação entre `CatalogModule` e `AirConditionerModelsModule`
+- ✅ **API unificada**: Todos os endpoints de modelos de ar-condicionado agora usam `/air-conditioner-models`
+- ✅ **Código limpo**: Removidos `CatalogService`, `CatalogController` e DTOs duplicados
+- ✅ **Melhorias de performance**: Queries otimizadas com filtros (brand, type, minBtu, maxBtu)
+- ✅ **Nova funcionalidade**: Endpoint `/air-conditioner-models/recommend?area={m2}` para recomendações por área
+
+**Frontend:**
+- ✅ **API Service atualizado**: Agora utiliza os endpoints corretos (`/air-conditioner-models`)
+- ✅ **Novo método**: `getRecommendedAirConditioners(area)` para buscar recomendações
+- ✅ **Lazy loading**: Todos os módulos já configurados com carregamento sob demanda
+- ✅ **Separação clara**: `/catalog` (view-only) vs `/cadastro` (admin CRUD)
+
+**Qualidade:**
+- ✅ **Conflitos resolvidos**: Merge conflicts no README.md corrigidos
+- ✅ **Índices otimizados**: 40+ índices de banco de dados para queries eficientes
+- ✅ **Clean Architecture**: Estrutura bem definida mantida
+
 ## Arquitetura
 
 - **Backend**: NestJS 11+ + TypeScript + PostgreSQL (Clean Architecture)
@@ -216,11 +238,15 @@ Para mais detalhes, consulte [AUTH_GUIDE.md](AUTH_GUIDE.md)
 - `POST /api/v1/quotations/:id/dispatch-suppliers` - Disparar para fornecedores
 - `GET /api/v1/quotations/:id/supplier-quotes` - Cotações dos fornecedores
 
-### Catálogo
+### Modelos de Ar-Condicionado
 
-- `GET /api/v1/catalog/air-conditioners` - Listar modelos
-- `POST /api/v1/catalog/air-conditioners` - Criar modelo
-- `PUT /api/v1/catalog/air-conditioners/:id` - Atualizar modelo
+- `GET /api/v1/air-conditioner-models` - Listar modelos (com filtros: brand, type, minBtu, maxBtu)
+- `GET /api/v1/air-conditioner-models/recommend?area={m2}` - Buscar modelos recomendados por área
+- `GET /api/v1/air-conditioner-models/:id` - Detalhe do modelo
+- `POST /api/v1/air-conditioner-models` - Criar modelo
+- `PUT /api/v1/air-conditioner-models/:id` - Atualizar modelo
+- `PATCH /api/v1/air-conditioner-models/:id/status` - Ativar/desativar modelo
+- `DELETE /api/v1/air-conditioner-models/:id` - Deletar modelo (soft delete)
 
 ### Fornecedores
 
@@ -396,13 +422,9 @@ O projeto inclui vários scripts para facilitar o desenvolvimento:
 ## Documentação Adicional
 
 - [QUICK_START.md](QUICK_START.md) - Guia rápido de início
-<<<<<<< HEAD
 - [ADVANCED_FEATURES.md](ADVANCED_FEATURES.md) - Funcionalidades avançadas (v2.0.0)
-- [AUTH_GUIDE.md](AUTH_GUIDE.md) - Documentação completa de autenticação
-=======
 - [AUTH_GUIDE.md](AUTH_GUIDE.md) - Documentação completa de autenticação (Backend)
 - [FRONTEND_AUTH_GUIDE.md](FRONTEND_AUTH_GUIDE.md) - Guia de autenticação do Frontend Angular
->>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
 - [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) - Status de implementação e roadmap
 - [TECHNICAL_SPEC.md](TECHNICAL_SPEC.md) - Especificação técnica detalhada
 - [EXAMPLES.md](EXAMPLES.md) - Exemplos de uso da API

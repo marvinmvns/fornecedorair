@@ -36,21 +36,25 @@ export class ApiService {
     return this.http.get<any[]>(`${this.baseUrl}/quotations/${quotationId}/chat-history`);
   }
 
-  // Catalog
+  // Air Conditioner Models (Catalog)
   getAirConditioners(filters?: any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/catalog/air-conditioners`, { params: filters });
+    return this.http.get<any[]>(`${this.baseUrl}/air-conditioner-models`, { params: filters });
   }
 
   getAirConditioner(id: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/catalog/air-conditioners/${id}`);
+    return this.http.get<any>(`${this.baseUrl}/air-conditioner-models/${id}`);
   }
 
   createAirConditioner(data: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/catalog/air-conditioners`, data);
+    return this.http.post<any>(`${this.baseUrl}/air-conditioner-models`, data);
   }
 
   updateAirConditioner(id: string, data: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/catalog/air-conditioners/${id}`, data);
+    return this.http.put<any>(`${this.baseUrl}/air-conditioner-models/${id}`, data);
+  }
+
+  getRecommendedAirConditioners(area: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/air-conditioner-models/recommend`, { params: { area: area.toString() } });
   }
 
   // Suppliers

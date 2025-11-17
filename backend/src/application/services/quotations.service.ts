@@ -7,7 +7,7 @@ import { QuotationItem } from '../../domain/entities/quotation-item.entity';
 import { SupplierQuote, SupplierQuoteStatus } from '../../domain/entities/supplier-quote.entity';
 import { ChatMessage, MessageDirection, MessageChannel, MessageRole } from '../../domain/entities/chat-message.entity';
 import { CreateQuotationDto } from '../../interface/dtos/quotations/create-quotation.dto';
-import { CatalogService } from './catalog.service';
+import { AirConditionerModelsService } from './air-conditioner-models.service';
 import { OllamaAdapter } from '../../infrastructure/adapters/ollama.adapter';
 import { WhatsappAdapter } from '../../infrastructure/adapters/whatsapp.adapter';
 
@@ -26,7 +26,7 @@ export class QuotationsService {
     private supplierQuoteRepo: Repository<SupplierQuote>,
     @InjectRepository(ChatMessage)
     private chatRepo: Repository<ChatMessage>,
-    private catalogService: CatalogService,
+    private acModelsService: AirConditionerModelsService,
     private ollamaAdapter: OllamaAdapter,
     private whatsappAdapter: WhatsappAdapter,
   ) {}
@@ -97,7 +97,7 @@ Estou processando e em breve você receberá as melhores opções! 🎯`;
 
   private async createFromParsedData(installerId: string, parsed: any): Promise<QuotationRequest> {
     // Find recommended products
-    const recommended = await this.catalogService.findRecommendedByArea(parsed.environmentAreaM2);
+    const recommended = await this.acModelsService.findRecommendedByArea(parsed.environmentAreaM2);
 
     const quotation = this.quotationRepo.create({
       originChannel: OriginChannel.WHATSAPP,
