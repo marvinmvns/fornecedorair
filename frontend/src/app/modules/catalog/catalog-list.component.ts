@@ -42,8 +42,8 @@ import { ApiService } from '../../core/services/api.service';
                 <td>{{ product.voltage }}</td>
                 <td><span class="badge bg-success">{{ product.energyEfficiencyClass }}</span></td>
                 <td>{{ product.recommendedAreaM2 || '-' }}</td>
-                <td>R$ {{ product.baseCost?.toFixed(2) }}</td>
-                <td>R$ {{ product.suggestedRetailPrice?.toFixed(2) }}</td>
+                <td>R$ {{ formatCurrency(product.baseCost) }}</td>
+                <td>R$ {{ formatCurrency(product.suggestedRetailPrice) }}</td>
               </tr>
             </tbody>
           </table>
@@ -68,7 +68,17 @@ export class CatalogListComponent implements OnInit {
     if (this.searchBrand) filters.brand = this.searchBrand;
 
     this.api.getAirConditioners(filters).subscribe(data => {
-      this.products = data;
+      // Ensure numeric fields are properly converted
+      this.products = data.map(product => ({
+        ...product,
+        baseCost: product.baseCost ? Number(product.baseCost) : 0,
+        suggestedRetailPrice: product.suggestedRetailPrice ? Number(product.suggestedRetailPrice) : 0,
+      }));
     });
+  }
+
+  formatCurrency(value: any): string {
+    const num = Number(value);
+    return isNaN(num) ? '0.00' : num.toFixed(2);
   }
 }
