@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+<<<<<<< HEAD
 import { AuthService, User } from '../../../core/services/auth.service';
+=======
+import { AuthService } from '../../../core/services/auth.service';
+import { User, UserRole } from '../../../core/models/user.model';
+>>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
+<<<<<<< HEAD
   standalone: false,
   template: `
     <header class="bg-white border-bottom px-4 py-3">
@@ -27,6 +33,14 @@ import { Observable } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
   currentUser$!: Observable<User | null>;
+=======
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
+})
+export class HeaderComponent implements OnInit {
+  currentUser$!: Observable<User | null>;
+  showDropdown = false;
+>>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
 
   constructor(private authService: AuthService) {}
 
@@ -43,6 +57,7 @@ export class HeaderComponent implements OnInit {
     return 'FornecedorAir';
   }
 
+<<<<<<< HEAD
   getRoleLabel(role: string): string {
     const roles: { [key: string]: string } = {
       'ADMIN': 'Administrador',
@@ -51,6 +66,30 @@ export class HeaderComponent implements OnInit {
       'VIEW_ONLY': 'Visualização'
     };
     return roles[role] || role;
+=======
+  getRoleBadgeClass(role: UserRole): string {
+    const roleClasses: { [key in UserRole]: string } = {
+      [UserRole.ADMIN]: 'bg-danger',
+      [UserRole.SALES_MANAGER]: 'bg-success',
+      [UserRole.ATTENDANT]: 'bg-primary',
+      [UserRole.VIEW_ONLY]: 'bg-secondary'
+    };
+    return roleClasses[role] || 'bg-secondary';
+  }
+
+  getRoleLabel(role: UserRole): string {
+    const roleLabels: { [key in UserRole]: string } = {
+      [UserRole.ADMIN]: 'Administrador',
+      [UserRole.SALES_MANAGER]: 'Gerente de Vendas',
+      [UserRole.ATTENDANT]: 'Atendente',
+      [UserRole.VIEW_ONLY]: 'Visualização'
+    };
+    return roleLabels[role] || role;
+  }
+
+  toggleDropdown(): void {
+    this.showDropdown = !this.showDropdown;
+>>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
   }
 
   logout(): void {

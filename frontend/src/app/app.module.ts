@@ -9,6 +9,12 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
 import { HeaderComponent } from './shared/components/header/header.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
+// Importar interceptor de autenticação
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+
+// Importar CoreModule com diretivas e serviços globais
+import { CoreModule } from './core/core.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,8 +26,18 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CoreModule
   ],
+  providers: [
+    // Registrar HTTP Interceptor para adicionar JWT automaticamente
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
+<<<<<<< HEAD
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -29,6 +45,8 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
       multi: true
     }
   ],
+=======
+>>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
   bootstrap: [AppComponent]
 })
 export class AppModule { }

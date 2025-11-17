@@ -351,7 +351,14 @@ npm run migration:revert
 - ✅ UI moderna baseada em template profissional
 
 ### v1.1.0 - Segurança e Multi-tenant
-- ✅ Autenticação JWT com Passport.js
+- ✅ Autenticação JWT com Passport.js (Backend)
+- ✅ Autenticação completa no Frontend Angular
+  - AuthService com login/logout e gerenciamento de token
+  - HTTP Interceptor para adicionar JWT automaticamente
+  - AuthGuard para proteção de rotas
+  - HasRole directive para controle de visibilidade
+  - Componentes de Login e Access Denied
+  - Header dinâmico com informações do usuário
 - ✅ RBAC com 4 níveis de permissão (ADMIN, SALES_MANAGER, ATTENDANT, VIEW_ONLY)
 - ✅ Suporte multi-tenant com isolamento de dados
 - ✅ Gerador de dados mock completo (3 tenants, 60 cotações)
@@ -389,8 +396,13 @@ O projeto inclui vários scripts para facilitar o desenvolvimento:
 ## Documentação Adicional
 
 - [QUICK_START.md](QUICK_START.md) - Guia rápido de início
+<<<<<<< HEAD
 - [ADVANCED_FEATURES.md](ADVANCED_FEATURES.md) - Funcionalidades avançadas (v2.0.0)
 - [AUTH_GUIDE.md](AUTH_GUIDE.md) - Documentação completa de autenticação
+=======
+- [AUTH_GUIDE.md](AUTH_GUIDE.md) - Documentação completa de autenticação (Backend)
+- [FRONTEND_AUTH_GUIDE.md](FRONTEND_AUTH_GUIDE.md) - Guia de autenticação do Frontend Angular
+>>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
 - [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) - Status de implementação e roadmap
 - [TECHNICAL_SPEC.md](TECHNICAL_SPEC.md) - Especificação técnica detalhada
 - [EXAMPLES.md](EXAMPLES.md) - Exemplos de uso da API
