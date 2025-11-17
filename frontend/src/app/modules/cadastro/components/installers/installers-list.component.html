@@ -1,0 +1,79 @@
+<div class="installers-container">
+  <div class="header">
+    <button class="back-button" (click)="back()">
+      <i class="material-icons">arrow_back</i>
+    </button>
+    <div class="header-content">
+      <h1>Instaladores</h1>
+      <p>Gerenciar instaladores parceiros</p>
+    </div>
+    <button class="btn-primary" (click)="createInstaller()">
+      <i class="material-icons">add</i>
+      Novo Instalador
+    </button>
+  </div>
+
+  <div class="search-box">
+    <i class="material-icons">search</i>
+    <input
+      type="text"
+      placeholder="Buscar por nome, WhatsApp, empresa ou cidade..."
+      [(ngModel)]="searchTerm">
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Carregando instaladores...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="installers-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>WhatsApp</th>
+          <th>Empresa</th>
+          <th>Cidade/Estado</th>
+          <th>CEP</th>
+          <th>Data Criação</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let installer of filteredInstallers">
+          <td>{{ installer.name }}</td>
+          <td>{{ installer.whatsappNumber }}</td>
+          <td>{{ installer.companyName || '-' }}</td>
+          <td>
+            <span *ngIf="installer.city || installer.state">
+              {{ installer.city || '' }}{{ installer.city && installer.state ? '/' : '' }}{{ installer.state || '' }}
+            </span>
+            <span *ngIf="!installer.city && !installer.state">-</span>
+          </td>
+          <td>{{ installer.zipCode || '-' }}</td>
+          <td>{{ installer.createdAt | date: 'dd/MM/yyyy' }}</td>
+          <td class="actions">
+            <button
+              class="btn-icon"
+              (click)="editInstaller(installer.id)"
+              title="Editar">
+              <i class="material-icons">edit</i>
+            </button>
+            <button
+              class="btn-icon btn-delete"
+              (click)="deleteInstaller(installer)"
+              title="Excluir">
+              <i class="material-icons">delete</i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredInstallers.length === 0">
+          <td colspan="7" class="no-data">Nenhum instalador encontrado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

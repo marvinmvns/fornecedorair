@@ -1,0 +1,94 @@
+<div class="form-container">
+  <div class="header">
+    <button class="back-button" (click)="cancel()">
+      <i class="material-icons">arrow_back</i>
+    </button>
+    <div class="header-content">
+      <h1>{{ isEditMode ? 'Editar Instalador' : 'Novo Instalador' }}</h1>
+      <p>{{ isEditMode ? 'Atualizar informações do instalador' : 'Preencha os dados para criar um novo instalador' }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <form [formGroup]="installerForm" (ngSubmit)="onSubmit()" class="installer-form">
+    <div class="form-group">
+      <label for="name">Nome *</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="Digite o nome do instalador"
+        [class.invalid]="hasError('name', 'required') || hasError('name', 'minlength')">
+      <span class="error" *ngIf="hasError('name', 'required')">
+        Nome é obrigatório
+      </span>
+      <span class="error" *ngIf="hasError('name', 'minlength')">
+        Nome deve ter no mínimo 3 caracteres
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label for="whatsappNumber">WhatsApp *</label>
+      <input
+        id="whatsappNumber"
+        type="text"
+        formControlName="whatsappNumber"
+        placeholder="Digite o número do WhatsApp (ex: 11999999999)"
+        [class.invalid]="hasError('whatsappNumber', 'required')">
+      <span class="error" *ngIf="hasError('whatsappNumber', 'required')">
+        WhatsApp é obrigatório
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label for="companyName">Nome da Empresa</label>
+      <input
+        id="companyName"
+        type="text"
+        formControlName="companyName"
+        placeholder="Digite o nome da empresa (opcional)">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="city">Cidade</label>
+        <input
+          id="city"
+          type="text"
+          formControlName="city"
+          placeholder="Digite a cidade">
+      </div>
+
+      <div class="form-group">
+        <label for="state">Estado</label>
+        <select id="state" formControlName="state">
+          <option value="">Selecione o estado</option>
+          <option *ngFor="let state of brazilianStates" [value]="state.value">
+            {{ state.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="zipCode">CEP</label>
+      <input
+        id="zipCode"
+        type="text"
+        formControlName="zipCode"
+        placeholder="Digite o CEP (ex: 12345-678)">
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">
+        Cancelar
+      </button>
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        {{ loading ? 'Salvando...' : (isEditMode ? 'Atualizar' : 'Criar') }}
+      </button>
+    </div>
+  </form>
+</div>

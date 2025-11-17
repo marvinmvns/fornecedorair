@@ -4,6 +4,7 @@ import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-access-denied',
+  standalone: false,
   templateUrl: './access-denied.component.html',
   styleUrls: ['./access-denied.component.scss']
 })

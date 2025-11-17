@@ -1,0 +1,78 @@
+<div class="users-container">
+  <div class="header">
+    <button class="back-button" (click)="back()">
+      <i class="material-icons">arrow_back</i>
+    </button>
+    <div class="header-content">
+      <h1>Usuários</h1>
+      <p>Gerenciar usuários do sistema</p>
+    </div>
+    <button class="btn-primary" (click)="createUser()">
+      <i class="material-icons">add</i>
+      Novo Usuário
+    </button>
+  </div>
+
+  <div class="search-box">
+    <i class="material-icons">search</i>
+    <input
+      type="text"
+      placeholder="Buscar por nome ou email..."
+      [(ngModel)]="searchTerm">
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Carregando usuários...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="users-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Função</th>
+          <th>Status</th>
+          <th>Data Criação</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <span class="role-badge">{{ getRoleLabel(user.role) }}</span>
+          </td>
+          <td>
+            <span [class]="'status-badge ' + (user.isActive ? 'active' : 'inactive')">
+              {{ user.isActive ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+          <td>{{ user.createdAt | date: 'dd/MM/yyyy' }}</td>
+          <td class="actions">
+            <button
+              class="btn-icon"
+              (click)="editUser(user.id)"
+              title="Editar">
+              <i class="material-icons">edit</i>
+            </button>
+            <button
+              class="btn-icon"
+              (click)="toggleUserStatus(user)"
+              [title]="user.isActive ? 'Desativar' : 'Ativar'">
+              <i class="material-icons">{{ user.isActive ? 'block' : 'check_circle' }}</i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredUsers.length === 0">
+          <td colspan="6" class="no-data">Nenhum usuário encontrado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

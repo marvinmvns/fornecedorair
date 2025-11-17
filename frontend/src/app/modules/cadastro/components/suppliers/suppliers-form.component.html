@@ -1,0 +1,84 @@
+<div class="form-container">
+  <div class="header">
+    <button class="back-button" (click)="cancel()">
+      <i class="material-icons">arrow_back</i>
+    </button>
+    <div class="header-content">
+      <h1>{{ isEditMode ? 'Editar Fornecedor' : 'Novo Fornecedor' }}</h1>
+      <p>{{ isEditMode ? 'Atualizar informações do fornecedor' : 'Preencha os dados para criar um novo fornecedor' }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()" class="supplier-form">
+    <div class="form-group">
+      <label for="name">Nome *</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="Digite o nome do fornecedor"
+        [class.invalid]="hasError('name', 'required') || hasError('name', 'minlength')">
+      <span class="error" *ngIf="hasError('name', 'required')">
+        Nome é obrigatório
+      </span>
+      <span class="error" *ngIf="hasError('name', 'minlength')">
+        Nome deve ter no mínimo 3 caracteres
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label for="whatsappNumber">WhatsApp</label>
+      <input
+        id="whatsappNumber"
+        type="text"
+        formControlName="whatsappNumber"
+        placeholder="Digite o número do WhatsApp (ex: +5511999999999)">
+    </div>
+
+    <div class="form-group">
+      <label for="apiUrl">URL da API</label>
+      <input
+        id="apiUrl"
+        type="text"
+        formControlName="apiUrl"
+        placeholder="Digite a URL da API do fornecedor">
+    </div>
+
+    <div class="form-group">
+      <label for="averageLeadTimeDays">Prazo Médio de Entrega (dias) *</label>
+      <input
+        id="averageLeadTimeDays"
+        type="number"
+        formControlName="averageLeadTimeDays"
+        min="1"
+        placeholder="Digite o prazo médio em dias"
+        [class.invalid]="hasError('averageLeadTimeDays', 'required') || hasError('averageLeadTimeDays', 'min')">
+      <span class="error" *ngIf="hasError('averageLeadTimeDays', 'required')">
+        Prazo médio é obrigatório
+      </span>
+      <span class="error" *ngIf="hasError('averageLeadTimeDays', 'min')">
+        Prazo médio deve ser no mínimo 1 dia
+      </span>
+    </div>
+
+    <div class="form-group checkbox-group">
+      <label>
+        <input type="checkbox" formControlName="isActive">
+        <span>Fornecedor Ativo</span>
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">
+        Cancelar
+      </button>
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        {{ loading ? 'Salvando...' : (isEditMode ? 'Atualizar' : 'Criar') }}
+      </button>
+    </div>
+  </form>
+</div>

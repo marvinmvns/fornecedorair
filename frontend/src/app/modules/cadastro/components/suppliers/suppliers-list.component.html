@@ -1,0 +1,82 @@
+<div class="suppliers-container">
+  <div class="header">
+    <button class="back-button" (click)="back()">
+      <i class="material-icons">arrow_back</i>
+    </button>
+    <div class="header-content">
+      <h1>Fornecedores</h1>
+      <p>Gerenciar fornecedores do sistema</p>
+    </div>
+    <button class="btn-primary" (click)="createSupplier()">
+      <i class="material-icons">add</i>
+      Novo Fornecedor
+    </button>
+  </div>
+
+  <div class="search-box">
+    <i class="material-icons">search</i>
+    <input
+      type="text"
+      placeholder="Buscar por nome ou WhatsApp..."
+      [(ngModel)]="searchTerm">
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Carregando fornecedores...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="suppliers-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>WhatsApp</th>
+          <th>URL da API</th>
+          <th>Prazo Médio (dias)</th>
+          <th>Status</th>
+          <th>Data Criação</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let supplier of filteredSuppliers">
+          <td>{{ supplier.name }}</td>
+          <td>{{ supplier.whatsappNumber || '-' }}</td>
+          <td>
+            <span class="api-url" [title]="supplier.apiUrl || '-'">
+              {{ supplier.apiUrl || '-' }}
+            </span>
+          </td>
+          <td>{{ supplier.averageLeadTimeDays }}</td>
+          <td>
+            <span [class]="'status-badge ' + (supplier.isActive ? 'active' : 'inactive')">
+              {{ supplier.isActive ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+          <td>{{ supplier.createdAt | date: 'dd/MM/yyyy' }}</td>
+          <td class="actions">
+            <button
+              class="btn-icon"
+              (click)="editSupplier(supplier.id)"
+              title="Editar">
+              <i class="material-icons">edit</i>
+            </button>
+            <button
+              class="btn-icon"
+              (click)="toggleSupplierStatus(supplier)"
+              [title]="supplier.isActive ? 'Desativar' : 'Ativar'">
+              <i class="material-icons">{{ supplier.isActive ? 'block' : 'check_circle' }}</i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredSuppliers.length === 0">
+          <td colspan="7" class="no-data">Nenhum fornecedor encontrado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

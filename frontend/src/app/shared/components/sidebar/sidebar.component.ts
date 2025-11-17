@@ -23,6 +23,9 @@ import { Component } from '@angular/core';
         <a routerLink="/suppliers" routerLinkActive="active" class="nav-link text-white">
           <i class="bi bi-building me-2"></i> Fornecedores
         </a>
+        <a routerLink="/cadastro" routerLinkActive="active" class="nav-link text-white">
+          <i class="bi bi-database me-2"></i> Cadastros
+        </a>
       </nav>
     </div>
   `,

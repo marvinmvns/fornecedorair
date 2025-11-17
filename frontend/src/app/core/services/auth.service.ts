@@ -2,21 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
-<<<<<<< HEAD
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: 'ADMIN' | 'SALES_MANAGER' | 'ATTENDANT' | 'VIEW_ONLY';
-  tenantId: string;
-}
-
-export interface LoginResponse {
-  access_token: string;
-  user: User;
-}
-=======
 import { environment } from '../../../environments/environment';
 import {
   User,
@@ -25,17 +10,11 @@ import {
   ChangePasswordRequest,
   ResetPasswordRequest
 } from '../models/user.model';
->>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-<<<<<<< HEAD
-  private readonly API_URL = 'http://localhost:3010/api/v1';
-  private currentUserSubject = new BehaviorSubject<User | null>(this.getUserFromStorage());
-  public currentUser$ = this.currentUserSubject.asObservable();
-=======
   private readonly TOKEN_KEY = 'fornecedorair_token';
   private readonly USER_KEY = 'fornecedorair_user';
 
@@ -44,27 +23,10 @@ export class AuthService {
 
   private isAuthenticatedSubject: BehaviorSubject<boolean>;
   public isAuthenticated$: Observable<boolean>;
->>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
 
   constructor(
     private http: HttpClient,
     private router: Router
-<<<<<<< HEAD
-  ) {}
-
-  private getUserFromStorage(): User | null {
-    const userStr = localStorage.getItem('currentUser');
-    return userStr ? JSON.parse(userStr) : null;
-  }
-
-  login(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.API_URL}/auth/login`, { email, password })
-      .pipe(
-        tap(response => {
-          localStorage.setItem('access_token', response.access_token);
-          localStorage.setItem('currentUser', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
-=======
   ) {
     const storedUser = this.getStoredUser();
     this.currentUserSubject = new BehaviorSubject<User | null>(storedUser);
@@ -82,28 +44,10 @@ export class AuthService {
       .pipe(
         tap(response => {
           this.setSession(response);
->>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
         })
       );
   }
 
-<<<<<<< HEAD
-  logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('access_token');
-  }
-
-  isAuthenticated(): boolean {
-    return !!this.getToken();
-  }
-
-=======
   /**
    * Realizar logout
    */
@@ -164,17 +108,10 @@ export class AuthService {
   /**
    * Obter usuário atual
    */
->>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
 
-<<<<<<< HEAD
-  hasRole(roles: string[]): boolean {
-    const user = this.getCurrentUser();
-    return user ? roles.includes(user.role) : false;
-  }
-=======
   /**
    * Verificar se usuário tem uma determinada role
    */
@@ -222,5 +159,4 @@ export class AuthService {
     }
     return null;
   }
->>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
 }

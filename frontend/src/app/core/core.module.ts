@@ -7,11 +7,9 @@ import { HasRoleDirective } from './directives/has-role.directive';
  * Contém serviços singleton, guards, interceptors e diretivas globais
  */
 @NgModule({
-  declarations: [
-    HasRoleDirective
-  ],
   imports: [
-    CommonModule
+    CommonModule,
+    HasRoleDirective
   ],
   exports: [
     HasRoleDirective

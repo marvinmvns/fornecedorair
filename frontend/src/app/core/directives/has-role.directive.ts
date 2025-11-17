@@ -11,7 +11,8 @@ import { UserRole } from '../models/user.model';
  * <div *appHasRole="['ADMIN', 'SALES_MANAGER']">Admins e gerentes veem isso</div>
  */
 @Directive({
-  selector: '[appHasRole]'
+  selector: '[appHasRole]',
+  standalone: true
 })
 export class HasRoleDirective implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();

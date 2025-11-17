@@ -43,6 +43,12 @@ export class SuppliersService {
     return this.supplierRepo.save(supplier);
   }
 
+  async toggleStatus(id: string): Promise<Supplier> {
+    const supplier = await this.findOne(id);
+    supplier.isActive = !supplier.isActive;
+    return this.supplierRepo.save(supplier);
+  }
+
   async remove(id: string): Promise<void> {
     const supplier = await this.findOne(id);
     supplier.isActive = false;

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Patch, Body, Param } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { SuppliersService, CreateSupplierDto } from '../../application/services/suppliers.service';
 
@@ -29,6 +29,12 @@ export class SuppliersController {
   @ApiOperation({ summary: 'Update supplier' })
   update(@Param('id') id: string, @Body() dto: Partial<CreateSupplierDto>) {
     return this.suppliersService.update(id, dto);
+  }
+
+  @Patch(':id/status')
+  @ApiOperation({ summary: 'Toggle supplier active status' })
+  toggleStatus(@Param('id') id: string) {
+    return this.suppliersService.toggleStatus(id);
   }
 
   @Delete(':id')

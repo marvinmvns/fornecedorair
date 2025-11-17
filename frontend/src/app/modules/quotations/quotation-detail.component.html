@@ -136,8 +136,8 @@
                 <div class="card-body">
                   <h6>{{ quote.supplier?.name }}</h6>
                   <hr>
-                  <p class="mb-1"><strong>Preço Total:</strong> <span class="text-success">R$ {{ quote.totalPrice?.toFixed(2) }}</span></p>
-                  <p class="mb-1"><strong>Preço Unit:</strong> R$ {{ quote.unitPrice?.toFixed(2) }}</p>
+                  <p class="mb-1"><strong>Preço Total:</strong> <span class="text-success">R$ {{ quote.totalPrice ? quote.totalPrice.toFixed(2) : '0.00' }}</span></p>
+                  <p class="mb-1"><strong>Preço Unit:</strong> R$ {{ quote.unitPrice ? quote.unitPrice.toFixed(2) : '0.00' }}</p>
                   <p class="mb-1"><strong>Prazo:</strong> {{ quote.leadTimeDays }} dias</p>
                   <p class="mb-1"><strong>Estoque:</strong> {{ quote.stockAvailable ? '✅ Disponível' : '❌ Indisponível' }}</p>
                   <p class="mb-1"><strong>Pagamento:</strong> {{ quote.paymentConditions }}</p>

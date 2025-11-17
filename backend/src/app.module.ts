@@ -12,6 +12,9 @@ import { OrdersModule } from './interface/modules/orders/orders.module';
 import { WhatsappModule } from './interface/modules/whatsapp/whatsapp.module';
 import { LlmModule } from './interface/modules/llm/llm.module';
 import { ChatModule } from './interface/modules/chat/chat.module';
+import { UsersModule } from './interface/modules/users/users.module';
+import { InstallersModule } from './interface/modules/installers/installers.module';
+import { AirConditionerModelsModule } from './interface/modules/air-conditioner-models/air-conditioner-models.module';
 
 @Module({
   imports: [
@@ -38,6 +41,9 @@ import { ChatModule } from './interface/modules/chat/chat.module';
     WhatsappModule,
     LlmModule,
     ChatModule,
+    UsersModule,
+    InstallersModule,
+    AirConditionerModelsModule,
   ],
 })
 export class AppModule {}

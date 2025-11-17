@@ -1,0 +1,84 @@
+<div class="models-container">
+  <div class="header">
+    <button class="back-button" (click)="back()">
+      <i class="material-icons">arrow_back</i>
+    </button>
+    <div class="header-content">
+      <h1>Modelos de Ar-Condicionado</h1>
+      <p>Gerenciar catalogo de equipamentos</p>
+    </div>
+    <button class="btn-primary" (click)="createModel()">
+      <i class="material-icons">add</i>
+      Novo Modelo
+    </button>
+  </div>
+
+  <div class="search-box">
+    <i class="material-icons">search</i>
+    <input
+      type="text"
+      placeholder="Buscar por SKU, marca, modelo ou tipo..."
+      [(ngModel)]="searchTerm">
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Carregando modelos...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="models-table">
+    <table>
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>BTUs</th>
+          <th>Tipo</th>
+          <th>Voltagem</th>
+          <th>Preco Sugerido</th>
+          <th>Status</th>
+          <th>Acoes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let model of filteredModels">
+          <td><strong>{{ model.sku }}</strong></td>
+          <td>{{ model.brand }}</td>
+          <td>{{ model.modelName }}</td>
+          <td>{{ model.btuCapacity | number }}</td>
+          <td>
+            <span class="type-badge">{{ getTypeLabel(model.type) }}</span>
+          </td>
+          <td>{{ model.voltage }}</td>
+          <td><strong>{{ formatCurrency(model.suggestedRetailPrice) }}</strong></td>
+          <td>
+            <span [class]="'status-badge ' + (model.isActive ? 'active' : 'inactive')">
+              {{ model.isActive ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button
+              class="btn-icon"
+              (click)="editModel(model.id)"
+              title="Editar">
+              <i class="material-icons">edit</i>
+            </button>
+            <button
+              class="btn-icon"
+              (click)="toggleModelStatus(model)"
+              [title]="model.isActive ? 'Desativar' : 'Ativar'">
+              <i class="material-icons">{{ model.isActive ? 'block' : 'check_circle' }}</i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredModels.length === 0">
+          <td colspan="9" class="no-data">Nenhum modelo encontrado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

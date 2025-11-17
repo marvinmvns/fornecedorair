@@ -1,0 +1,233 @@
+<div class="form-container">
+  <div class="header">
+    <button class="back-button" (click)="cancel()">
+      <i class="material-icons">arrow_back</i>
+    </button>
+    <div class="header-content">
+      <h1>{{ isEditMode ? 'Editar Modelo' : 'Novo Modelo' }}</h1>
+      <p>{{ isEditMode ? 'Atualizar informacoes do modelo de ar-condicionado' : 'Preencha os dados para criar um novo modelo' }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <form [formGroup]="modelForm" (ngSubmit)="onSubmit()" class="model-form">
+    <div class="form-section">
+      <h3>Informacoes Basicas</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="sku">SKU *</label>
+          <input
+            id="sku"
+            type="text"
+            formControlName="sku"
+            placeholder="Digite o codigo SKU (ex: LG-S12-INV)"
+            [class.invalid]="hasError('sku', 'required') || hasError('sku', 'minlength')">
+          <span class="error" *ngIf="hasError('sku', 'required')">
+            SKU e obrigatorio
+          </span>
+          <span class="error" *ngIf="hasError('sku', 'minlength')">
+            SKU deve ter no minimo 3 caracteres
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="brand">Marca *</label>
+          <input
+            id="brand"
+            type="text"
+            formControlName="brand"
+            placeholder="Digite a marca (ex: LG, Samsung, Midea)"
+            [class.invalid]="hasError('brand', 'required') || hasError('brand', 'minlength')">
+          <span class="error" *ngIf="hasError('brand', 'required')">
+            Marca e obrigatoria
+          </span>
+          <span class="error" *ngIf="hasError('brand', 'minlength')">
+            Marca deve ter no minimo 2 caracteres
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="modelName">Nome do Modelo *</label>
+        <input
+          id="modelName"
+          type="text"
+          formControlName="modelName"
+          placeholder="Digite o nome do modelo (ex: Dual Inverter Voice 12000)"
+          [class.invalid]="hasError('modelName', 'required') || hasError('modelName', 'minlength')">
+        <span class="error" *ngIf="hasError('modelName', 'required')">
+          Nome do modelo e obrigatorio
+        </span>
+        <span class="error" *ngIf="hasError('modelName', 'minlength')">
+          Nome do modelo deve ter no minimo 3 caracteres
+        </span>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Especificacoes Tecnicas</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="btuCapacity">Capacidade (BTUs) *</label>
+          <input
+            id="btuCapacity"
+            type="number"
+            formControlName="btuCapacity"
+            min="7000"
+            placeholder="Digite a capacidade em BTUs (ex: 12000)"
+            [class.invalid]="hasError('btuCapacity', 'required') || hasError('btuCapacity', 'min')">
+          <span class="error" *ngIf="hasError('btuCapacity', 'required')">
+            Capacidade e obrigatoria
+          </span>
+          <span class="error" *ngIf="hasError('btuCapacity', 'min')">
+            Capacidade deve ser no minimo 7000 BTUs
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="type">Tipo *</label>
+          <select id="type" formControlName="type">
+            <option *ngFor="let type of acTypes" [value]="type.value">
+              {{ type.label }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="voltage">Voltagem *</label>
+          <select id="voltage" formControlName="voltage">
+            <option *ngFor="let voltage of voltages" [value]="voltage.value">
+              {{ voltage.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="energyEfficiencyClass">Classe de Eficiencia Energetica *</label>
+          <select id="energyEfficiencyClass" formControlName="energyEfficiencyClass">
+            <option *ngFor="let energyClass of energyClasses" [value]="energyClass.value">
+              Classe {{ energyClass.label }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="noiseLevelDb">Nivel de Ruido (dB)</label>
+          <input
+            id="noiseLevelDb"
+            type="number"
+            formControlName="noiseLevelDb"
+            min="0"
+            placeholder="Digite o nivel de ruido (ex: 45)">
+        </div>
+
+        <div class="form-group">
+          <label for="recommendedAreaM2">Area Recomendada (m²)</label>
+          <input
+            id="recommendedAreaM2"
+            type="number"
+            formControlName="recommendedAreaM2"
+            min="0"
+            placeholder="Digite a area recomendada (ex: 20)">
+        </div>
+      </div>
+
+      <div class="form-row checkbox-row">
+        <div class="form-group checkbox-group">
+          <label>
+            <input type="checkbox" formControlName="inverter">
+            <span>Tecnologia Inverter</span>
+          </label>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label>
+            <input type="checkbox" formControlName="wifiEnabled">
+            <span>WiFi Habilitado</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Informacoes Comerciais</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="baseCost">Custo Base (R$) *</label>
+          <input
+            id="baseCost"
+            type="number"
+            formControlName="baseCost"
+            min="0"
+            step="0.01"
+            placeholder="Digite o custo base (ex: 1500.00)"
+            [class.invalid]="hasError('baseCost', 'required') || hasError('baseCost', 'min')">
+          <span class="error" *ngIf="hasError('baseCost', 'required')">
+            Custo base e obrigatorio
+          </span>
+          <span class="error" *ngIf="hasError('baseCost', 'min')">
+            Custo base deve ser maior ou igual a zero
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="suggestedRetailPrice">Preco Sugerido (R$) *</label>
+          <input
+            id="suggestedRetailPrice"
+            type="number"
+            formControlName="suggestedRetailPrice"
+            min="0"
+            step="0.01"
+            placeholder="Digite o preco sugerido (ex: 2500.00)"
+            [class.invalid]="hasError('suggestedRetailPrice', 'required') || hasError('suggestedRetailPrice', 'min')">
+          <span class="error" *ngIf="hasError('suggestedRetailPrice', 'required')">
+            Preco sugerido e obrigatorio
+          </span>
+          <span class="error" *ngIf="hasError('suggestedRetailPrice', 'min')">
+            Preco sugerido deve ser maior ou igual a zero
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Recursos Adicionais</h3>
+
+      <div class="form-group">
+        <label for="features">Recursos</label>
+        <textarea
+          id="features"
+          formControlName="features"
+          rows="3"
+          placeholder="Digite os recursos separados por virgula (ex: Filtro antibacteriano, Modo sleep, Auto limpeza)"></textarea>
+        <small class="help-text">Separe os recursos por virgula</small>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <label>
+          <input type="checkbox" formControlName="isActive">
+          <span>Modelo Ativo</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">
+        Cancelar
+      </button>
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        {{ loading ? 'Salvando...' : (isEditMode ? 'Atualizar' : 'Criar') }}
+      </button>
+    </div>
+  </form>
+</div>

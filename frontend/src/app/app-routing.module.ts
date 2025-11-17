@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
-<<<<<<< HEAD
-=======
 import { UserRole } from './core/models/user.model';
->>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
 
 const routes: Routes = [
   // Rota padrão redireciona para dashboard
@@ -38,12 +35,8 @@ const routes: Routes = [
   {
     path: 'catalog',
     loadChildren: () => import('./modules/catalog/catalog.module').then(m => m.CatalogModule),
-<<<<<<< HEAD
-    canActivate: [AuthGuard]
-=======
     canActivate: [AuthGuard],
     data: { roles: [UserRole.ADMIN, UserRole.SALES_MANAGER] }
->>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
   },
 
   // Fornecedores - requer autenticação (ADMIN ou SALES_MANAGER)
@@ -51,16 +44,19 @@ const routes: Routes = [
     path: 'suppliers',
     loadChildren: () => import('./modules/suppliers/suppliers.module').then(m => m.SuppliersModule),
     canActivate: [AuthGuard],
-<<<<<<< HEAD
-    data: { roles: ['ADMIN', 'SALES_MANAGER'] }
-  }
-=======
     data: { roles: [UserRole.ADMIN, UserRole.SALES_MANAGER] }
+  },
+
+  // Cadastros - requer autenticação (ADMIN)
+  {
+    path: 'cadastro',
+    loadChildren: () => import('./modules/cadastro/cadastro.module').then(m => m.CadastroModule),
+    canActivate: [AuthGuard],
+    data: { roles: [UserRole.ADMIN] }
   },
 
   // Rota wildcard - redireciona para dashboard
   { path: '**', redirectTo: '/dashboard' }
->>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
 ];
 
 @NgModule({

@@ -9,9 +9,6 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
 import { HeaderComponent } from './shared/components/header/header.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
-// Importar interceptor de autenticação
-import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-
 // Importar CoreModule com diretivas e serviços globais
 import { CoreModule } from './core/core.module';
 
@@ -37,16 +34,6 @@ import { CoreModule } from './core/core.module';
       multi: true
     }
   ],
-<<<<<<< HEAD
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    }
-  ],
-=======
->>>>>>> 214a1b9e45700bde4bdfe756f4b36b06e1ff278d
   bootstrap: [AppComponent]
 })
 export class AppModule { }
