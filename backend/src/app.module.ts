@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 
 // Modules
+import { AuthModule } from './interface/modules/auth/auth.module';
 import { QuotationsModule } from './interface/modules/quotations/quotations.module';
 import { CatalogModule } from './interface/modules/catalog/catalog.module';
 import { SuppliersModule } from './interface/modules/suppliers/suppliers.module';
@@ -29,6 +30,7 @@ import { ChatModule } from './interface/modules/chat/chat.module';
       synchronize: false,
       logging: process.env.NODE_ENV === 'development',
     }),
+    AuthModule,
     QuotationsModule,
     CatalogModule,
     SuppliersModule,

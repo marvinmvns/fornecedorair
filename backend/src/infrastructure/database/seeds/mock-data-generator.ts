@@ -16,6 +16,11 @@ async function generateMockData() {
 
   await AppDataSource.initialize();
 
+  // 0. Clear existing data
+  console.log('\n🧹 Clearing existing data...');
+  await AppDataSource.query('TRUNCATE TABLE tenants, users, installers, suppliers, air_conditioner_models, quotation_requests, quotation_items, supplier_quotes, orders, chat_messages CASCADE');
+  console.log('   ✅ Data cleared');
+
   // 1. Create Tenants
   console.log('\n📦 Creating tenants...');
   const tenants = [];
@@ -120,12 +125,13 @@ async function generateMockData() {
     { name: 'ClimaTop Distribuidora', phone: '5511999990005', leadTime: 6 },
   ];
 
+  let supplierPhoneCounter = 1;
   for (const tenant of tenants) {
     for (const mockSupplier of mockSuppliers) {
       const supplier = AppDataSource.getRepository(Supplier).create({
         tenantId: tenant.id,
-        name: mockSupplier.name,
-        whatsappNumber: mockSupplier.phone,
+        name: `${mockSupplier.name} [${tenant.slug}]`,
+        whatsappNumber: mockSupplier.phone ? `5511999${990000 + supplierPhoneCounter}` : null,
         apiUrl: mockSupplier.api || null,
         averageLeadTimeDays: mockSupplier.leadTime,
         isActive: true,
@@ -133,6 +139,7 @@ async function generateMockData() {
 
       const saved = await AppDataSource.getRepository(Supplier).save(supplier);
       suppliers.push(saved);
+      supplierPhoneCounter++;
     }
   }
 
@@ -151,21 +158,23 @@ async function generateMockData() {
     { city: 'Porto Alegre', state: 'RS' },
   ];
 
+  let installerCounter = 0;
   for (const tenant of tenants) {
     for (let i = 0; i < 10; i++) {
       const location = cities[i % cities.length];
       const installer = AppDataSource.getRepository(Installer).create({
         tenantId: tenant.id,
         name: `Instalador ${tenant.slug.charAt(0).toUpperCase()}${i + 1}`,
-        whatsappNumber: `55119999${String(i).padStart(5, '0')}`,
+        whatsappNumber: `55119999${String(installerCounter).padStart(5, '0')}`,
         companyName: i % 2 === 0 ? `Empresa ${i + 1}` : null,
         city: location.city,
         state: location.state,
-        zipCode: `${String(i).padStart(5, '0')}-000`,
+        zipCode: `${String(installerCounter).padStart(5, '0')}-000`,
       });
 
       const saved = await AppDataSource.getRepository(Installer).save(installer);
       installers.push(saved);
+      installerCounter++;
     }
   }
 

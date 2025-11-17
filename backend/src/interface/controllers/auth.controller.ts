@@ -1,28 +1,47 @@
 import { Controller, Post, Body, Get, Put, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { IsEmail, IsString, MinLength } from 'class-validator';
 import { AuthService } from '../../application/services/auth.service';
 import { Public } from '../../infrastructure/decorators/public.decorator';
 import { CurrentUser } from '../../infrastructure/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../../infrastructure/guards/jwt-auth.guard';
 
 class LoginDto {
+  @IsEmail()
   email: string;
+
+  @IsString()
+  @MinLength(6)
   password: string;
 }
 
 class RegisterDto {
+  @IsEmail()
   email: string;
+
+  @IsString()
+  @MinLength(6)
   password: string;
+
+  @IsString()
   name: string;
+
+  @IsString()
   tenantId: string;
 }
 
 class ChangePasswordDto {
+  @IsString()
+  @MinLength(6)
   oldPassword: string;
+
+  @IsString()
+  @MinLength(6)
   newPassword: string;
 }
 
 class ResetPasswordDto {
+  @IsEmail()
   email: string;
 }
 

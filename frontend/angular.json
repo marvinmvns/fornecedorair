@@ -15,11 +15,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/fornecedorair-frontend",
             "index": "src/index.html",
-            "main": "src/main.ts",
+            "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -44,12 +44,9 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -58,10 +55,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "fornecedorair-frontend:build:production"
+              "buildTarget": "fornecedorair-frontend:build:production"
             },
             "development": {
-              "browserTarget": "fornecedorair-frontend:build:development"
+              "buildTarget": "fornecedorair-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,5 +76,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "de8dbba8-0214-4ec4-b193-bb5b8a7ece71"
   }
 }

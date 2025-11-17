@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
+  standalone: false,
   template: `
     <div class="sidebar p-3" style="width: 250px;">
       <div class="text-center mb-4">

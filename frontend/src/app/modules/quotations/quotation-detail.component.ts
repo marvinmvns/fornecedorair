@@ -4,6 +4,7 @@ import { ApiService } from '../../core/services/api.service';
 
 @Component({
   selector: 'app-quotation-detail',
+  standalone: false,
   templateUrl: './quotation-detail.component.html',
   styles: [`
     .quote-card {

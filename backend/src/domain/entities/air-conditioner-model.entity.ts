@@ -29,6 +29,9 @@ export class AirConditionerModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ nullable: true })
+  tenantId: string;
+
   @Column({ unique: true })
   sku: string;
 

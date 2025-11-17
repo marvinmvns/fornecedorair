@@ -4,8 +4,8 @@ Sistema completo de gestão de cotações de ar-condicionado para distribuidores
 
 ## Arquitetura
 
-- **Backend**: NestJS + TypeScript + PostgreSQL (Clean Architecture)
-- **Frontend**: Angular 16+ (Template Bsinx)
+- **Backend**: NestJS 11+ + TypeScript + PostgreSQL (Clean Architecture)
+- **Frontend**: Angular 20+ (Template Bsinx)
 - **Integrações**: WhatsApp (whatsapp-web.js) + Ollama LLM
 - **Banco de Dados**: PostgreSQL com TypeORM
 - **Autenticação**: JWT com RBAC (4 níveis de permissão)
@@ -91,7 +91,7 @@ npm run migration:run
 npm run start:dev
 ```
 
-API disponível em: http://localhost:3000
+API disponível em: http://localhost:3010
 
 #### 3. Frontend
 
@@ -142,7 +142,7 @@ docker-compose -f docker-compose.prod.yml logs -f
 
 Serviços disponíveis:
 - Frontend: http://localhost (porta 80)
-- Backend API: http://localhost:3000
+- Backend API: http://localhost:3010
 - WhatsApp Service: http://localhost:3001
 
 ## Fluxos Principais
@@ -261,7 +261,7 @@ JWT_SECRET=your-secret-key-change-in-production
 JWT_EXPIRATION=7d
 
 # Server
-PORT=3000
+PORT=3010
 NODE_ENV=development
 ```
 
@@ -278,7 +278,7 @@ NODE_ENV=development
 ```typescript
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api/v1'
+  apiUrl: 'http://localhost:3010/api/v1'
 };
 ```
 
@@ -314,7 +314,7 @@ npm run migration:revert
 ## Tecnologias
 
 ### Backend
-- **Framework**: NestJS 10+
+- **Framework**: NestJS 11+
 - **ORM**: TypeORM
 - **Database**: PostgreSQL 14+
 - **Authentication**: Passport.js + JWT
@@ -322,7 +322,7 @@ npm run migration:revert
 - **Security**: bcrypt, helmet
 
 ### Frontend
-- **Framework**: Angular 16+
+- **Framework**: Angular 20+
 - **State Management**: RxJS
 - **UI**: Bootstrap 5 (Bsinx template)
 - **HTTP**: HttpClient com interceptors
@@ -358,14 +358,16 @@ npm run migration:revert
 - ✅ Docker images para produção (backend, frontend, whatsapp)
 - ✅ Scripts de verificação e inicialização automatizados
 
-### v2.0.0 - Recursos Avançados (Em Desenvolvimento)
-- 🚧 SLA tracking e workflow timeline
-- 🚧 Gerenciamento de anexos (fotos/PDFs via WhatsApp)
-- 🚧 Motor de precificação com cenários (Econômico/Standard/Premium)
-- 🚧 Agendamento de instalações
-- 🚧 Sistema de notificações internas
-- 🚧 Analytics e dashboards comerciais
-- 🚧 WhatsApp aprimorado (fila, retry, multi-sessão)
+### v2.0.0 - Recursos Avançados (Implementados)
+- ✅ SLA tracking e workflow timeline
+- ✅ Gerenciamento de anexos (fotos/PDFs via WhatsApp)
+- ✅ Motor de precificação com cenários (Econômico/Standard/Premium)
+- ✅ Agendamento de instalações
+- ✅ Sistema de notificações internas
+- ✅ WhatsApp aprimorado (fila, retry, multi-sessão)
+- 🚧 Analytics e dashboards comerciais (Em desenvolvimento - frontend)
+
+📖 **Documentação Completa**: [ADVANCED_FEATURES.md](ADVANCED_FEATURES.md)
 
 Consulte [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) para roadmap completo.
 
@@ -387,6 +389,7 @@ O projeto inclui vários scripts para facilitar o desenvolvimento:
 ## Documentação Adicional
 
 - [QUICK_START.md](QUICK_START.md) - Guia rápido de início
+- [ADVANCED_FEATURES.md](ADVANCED_FEATURES.md) - Funcionalidades avançadas (v2.0.0)
 - [AUTH_GUIDE.md](AUTH_GUIDE.md) - Documentação completa de autenticação
 - [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) - Status de implementação e roadmap
 - [TECHNICAL_SPEC.md](TECHNICAL_SPEC.md) - Especificação técnica detalhada
@@ -417,7 +420,7 @@ Dados de teste:
 cat backend/.env | grep JWT_SECRET
 
 # Teste o endpoint de login
-curl -X POST http://localhost:3000/api/v1/auth/login \
+curl -X POST http://localhost:3010/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@alpha.com","password":"password123"}'
 ```

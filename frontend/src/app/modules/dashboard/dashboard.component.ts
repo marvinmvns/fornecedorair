@@ -3,6 +3,7 @@ import { ApiService } from '../../core/services/api.service';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: false,
   template: `
     <div class="container-fluid">
       <div class="row">

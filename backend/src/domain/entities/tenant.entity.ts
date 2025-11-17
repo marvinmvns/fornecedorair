@@ -1,9 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { User } from './user.entity';
 import { Installer } from './installer.entity';
-import { Supplier } from './supplier.entity';
-import { AirConditionerModel } from './air-conditioner-model.entity';
-import { QuotationRequest } from './quotation-request.entity';
+// Note: Supplier, AirConditionerModel, and QuotationRequest imports temporarily disabled for multi-tenancy
+// import { Supplier } from './supplier.entity';
+// import { AirConditionerModel } from './air-conditioner-model.entity';
+// import { QuotationRequest } from './quotation-request.entity';
 
 @Entity('tenants')
 export class Tenant {
@@ -43,14 +44,15 @@ export class Tenant {
   @OneToMany(() => Installer, installer => installer.tenant)
   installers: Installer[];
 
-  @OneToMany(() => Supplier, supplier => supplier.tenant)
-  suppliers: Supplier[];
+  // Note: Multi-tenancy relationships temporarily disabled
+  // @OneToMany(() => Supplier, supplier => supplier.tenant)
+  // suppliers: Supplier[];
 
-  @OneToMany(() => AirConditionerModel, model => model.tenant)
-  airConditionerModels: AirConditionerModel[];
+  // @OneToMany(() => AirConditionerModel, model => model.tenant)
+  // airConditionerModels: AirConditionerModel[];
 
-  @OneToMany(() => QuotationRequest, quotation => quotation.tenant)
-  quotationRequests: QuotationRequest[];
+  // @OneToMany(() => QuotationRequest, quotation => quotation.tenant)
+  // quotationRequests: QuotationRequest[];
 
   @CreateDateColumn()
   createdAt: Date;

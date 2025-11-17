@@ -46,6 +46,7 @@ chmod +x scripts/init-database.sh
 # ✅ Criar arquivo .env
 # ✅ Executar migrations do banco
 # ✅ Popular com dados completos (3 tenants, 60 cotações, 30 instaladores)
+# ✅ Criar tabelas de funcionalidades avançadas (SLA, anexos, precificação, etc.)
 ```
 
 **Dados gerados no modo mock:**
@@ -65,6 +66,8 @@ chmod +x scripts/init-database.sh
 # Isso cria apenas:
 # - 10 modelos de ar-condicionado
 # - 4 fornecedores
+# - 4 configurações de SLA padrão
+# - Tabelas de funcionalidades avançadas
 ```
 
 ## Iniciar a Aplicação
@@ -141,8 +144,8 @@ admin@gamma.com / password123
 ```
 
 ### Backend API
-- **URL**: http://localhost:3000/api/v1
-- **Documentação Swagger**: http://localhost:3000/api/docs
+- **URL**: http://localhost:3010/api/v1
+- **Documentação Swagger**: http://localhost:3010/api/docs
 - **Autenticação**: Todos os endpoints (exceto /auth/login) requerem JWT Bearer Token
 
 ### Banco de Dados (pgAdmin)
@@ -163,7 +166,7 @@ admin@gamma.com / password123
 **Teste da API (curl):**
 ```bash
 # Fazer login e obter token
-curl -X POST http://localhost:3000/api/v1/auth/login \
+curl -X POST http://localhost:3010/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@alpha.com","password":"password123"}'
 
@@ -175,7 +178,7 @@ curl -X POST http://localhost:3000/api/v1/auth/login \
 
 # Usar o token em requisições
 TOKEN="seu-token-aqui"
-curl -X GET http://localhost:3000/api/v1/quotations \
+curl -X GET http://localhost:3010/api/v1/quotations \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -365,7 +368,7 @@ docker-compose down
 cat backend/.env | grep JWT_SECRET
 
 # Faça login novamente para obter novo token
-curl -X POST http://localhost:3000/api/v1/auth/login \
+curl -X POST http://localhost:3010/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@alpha.com","password":"password123"}'
 ```
@@ -397,7 +400,7 @@ npm run dev
 
 ```bash
 # Verifique se o backend está rodando
-curl http://localhost:3000/api/v1/catalog/air-conditioners
+curl http://localhost:3010/api/v1/catalog/air-conditioners
 
 # Você deve receber erro 401 (Unauthorized) se não estiver autenticado
 # Isso é esperado! Faça login primeiro
@@ -464,13 +467,14 @@ docker-compose -f docker-compose.prod.yml down
 
 Serviços em produção:
 - Frontend: http://localhost (porta 80)
-- Backend API: http://localhost:3000
+- Backend API: http://localhost:3010
 - WhatsApp: http://localhost:3001
 - PostgreSQL: porta 5432 (apenas rede interna)
 
 ## Próximos Passos
 
 - 📚 Leia o [README.md](README.md) completo
+- 🚀 Explore as [Funcionalidades Avançadas](ADVANCED_FEATURES.md) (SLA, Anexos, Precificação, etc.)
 - 🔐 Consulte o [AUTH_GUIDE.md](AUTH_GUIDE.md) para detalhes de autenticação
 - 📋 Veja o [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) para roadmap
 - 🔧 Customize o template da proposta em `backend/src/infrastructure/adapters/ollama.adapter.ts`
@@ -483,7 +487,7 @@ Serviços em produção:
 
 Para problemas ou dúvidas:
 - Abra uma issue no GitHub
-- Consulte a documentação da API em http://localhost:3000/api/docs
+- Consulte a documentação da API em http://localhost:3010/api/docs
 - Verifique os logs nos terminais de cada serviço
 
 ---

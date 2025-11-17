@@ -152,10 +152,22 @@ else
     echo "📊 Dados básicos gerados:"
     echo "   - 10 modelos de ar-condicionado"
     echo "   - 4 fornecedores"
+    echo "   - 4 configurações de SLA padrão"
     echo ""
     echo "⚠️  Para gerar dados mock completos, execute:"
     echo "   ./scripts/init-database.sh mock"
 fi
+
+echo ""
+echo "📋 Funcionalidades Avançadas Disponíveis:"
+echo "   ✅ SLA Tracking e Workflow Timeline"
+echo "   ✅ Gerenciamento de Anexos (fotos/PDFs)"
+echo "   ✅ Motor de Precificação (Econômico/Standard/Premium)"
+echo "   ✅ Agendamento de Instalações"
+echo "   ✅ Sistema de Notificações Internas"
+echo "   ✅ WhatsApp Aprimorado (fila, retry, multi-sessão)"
+echo ""
+echo "📖 Veja ADVANCED_FEATURES.md para mais detalhes"
 
 echo ""
 echo "🚀 Próximos passos:"

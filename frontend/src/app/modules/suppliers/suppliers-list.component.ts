@@ -3,6 +3,7 @@ import { ApiService } from '../../core/services/api.service';
 
 @Component({
   selector: 'app-suppliers-list',
+  standalone: false,
   template: `
     <div class="container-fluid">
       <div class="d-flex justify-content-between align-items-center mb-4">

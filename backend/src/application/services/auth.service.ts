@@ -14,7 +14,7 @@ export interface JwtPayload {
 }
 
 export interface LoginResponse {
-  accessToken: string;
+  access_token: string;
   user: {
     id: string;
     email: string;
@@ -86,7 +86,7 @@ export class AuthService {
     this.logger.log(`User ${user.email} logged in successfully`);
 
     return {
-      accessToken,
+      access_token: accessToken,
       user: {
         id: user.id,
         email: user.email,

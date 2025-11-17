@@ -41,7 +41,14 @@ export class CatalogService {
       query.andWhere('ac.btuCapacity <= :maxBtu', { maxBtu: filters.maxBtu });
     }
 
-    return query.orderBy('ac.brand', 'ASC').addOrderBy('ac.btuCapacity', 'ASC').getMany();
+    const models = await query.orderBy('ac.brand', 'ASC').addOrderBy('ac.btuCapacity', 'ASC').getMany();
+
+    // Convert decimal strings to numbers for proper JSON serialization
+    return models.map(model => ({
+      ...model,
+      baseCost: Number(model.baseCost),
+      suggestedRetailPrice: Number(model.suggestedRetailPrice),
+    })) as AirConditionerModel[];
   }
 
   async findOne(id: string): Promise<AirConditionerModel> {
@@ -49,7 +56,12 @@ export class CatalogService {
     if (!model) {
       throw new NotFoundException(`Air conditioner model with ID ${id} not found`);
     }
-    return model;
+    // Convert decimal strings to numbers for proper JSON serialization
+    return {
+      ...model,
+      baseCost: Number(model.baseCost),
+      suggestedRetailPrice: Number(model.suggestedRetailPrice),
+    } as AirConditionerModel;
   }
 
   async update(id: string, dto: UpdateAirConditionerDto): Promise<AirConditionerModel> {
@@ -70,7 +82,7 @@ export class CatalogService {
     const minBtu = estimatedBtu * 0.8;
     const maxBtu = estimatedBtu * 1.2;
 
-    return this.acRepository
+    const models = await this.acRepository
       .createQueryBuilder('ac')
       .where('ac.isActive = :isActive', { isActive: true })
       .andWhere('ac.btuCapacity >= :minBtu', { minBtu })
@@ -78,5 +90,12 @@ export class CatalogService {
       .orderBy('ac.energyEfficiencyClass', 'ASC')
       .addOrderBy('ac.baseCost', 'ASC')
       .getMany();
+
+    // Convert decimal strings to numbers for proper JSON serialization
+    return models.map(model => ({
+      ...model,
+      baseCost: Number(model.baseCost),
+      suggestedRetailPrice: Number(model.suggestedRetailPrice),
+    })) as AirConditionerModel[];
   }
 }

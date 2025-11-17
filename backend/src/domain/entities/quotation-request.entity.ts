@@ -28,6 +28,9 @@ export class QuotationRequest {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ nullable: true })
+  tenantId: string;
+
   @Column({ type: 'enum', enum: OriginChannel })
   originChannel: OriginChannel;
 
