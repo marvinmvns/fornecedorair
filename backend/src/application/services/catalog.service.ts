@@ -26,7 +26,7 @@ export class CatalogService {
     const query = this.acRepository.createQueryBuilder('ac').where('ac.isActive = :isActive', { isActive: true });
 
     if (filters?.brand) {
-      query.andWhere('LOWER(ac.brand) = LOWER(:brand)', { brand: filters.brand });
+      query.andWhere('LOWER(ac.brand) LIKE LOWER(:brand)', { brand: `%${filters.brand}%` });
     }
 
     if (filters?.type) {

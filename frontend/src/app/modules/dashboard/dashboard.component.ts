@@ -1,93 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../core/services/api.service';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
   standalone: false,
-  template: `
-    <div class="container-fluid">
-      <div class="row">
-        <!-- KPI Cards -->
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-body text-center">
-              <h3 class="text-primary">{{ stats.open }}</h3>
-              <p class="text-muted mb-0">Cotações Abertas</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-body text-center">
-              <h3 class="text-warning">{{ stats.waiting }}</h3>
-              <p class="text-muted mb-0">Aguardando Fornecedores</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-body text-center">
-              <h3 class="text-success">{{ stats.completed }}</h3>
-              <p class="text-muted mb-0">Propostas Enviadas</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-body text-center">
-              <h3 class="text-info">{{ stats.total }}</h3>
-              <p class="text-muted mb-0">Total do Mês</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Recent Quotations -->
-      <div class="row mt-4">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">Últimas Cotações</h5>
-            </div>
-            <div class="card-body">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Cliente</th>
-                    <th>Origem</th>
-                    <th>Status</th>
-                    <th>Data</th>
-                    <th>Ação</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let q of recentQuotations">
-                    <td>#{{ q.id?.substring(0, 8) }}</td>
-                    <td>{{ q.installer?.name }}</td>
-                    <td><span class="badge bg-secondary">{{ q.originChannel }}</span></td>
-                    <td><span class="badge" [ngClass]="getStatusClass(q.status)">{{ getStatusLabel(q.status) }}</span></td>
-                    <td>{{ q.createdAt | date:'short' }}</td>
-                    <td>
-                      <a [routerLink]="['/quotations', q.id]" class="btn btn-sm btn-primary">Ver detalhes</a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .card {
-      transition: transform 0.2s;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-    }
-  `]
+  templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
   stats = {
@@ -99,6 +17,90 @@ export class DashboardComponent implements OnInit {
 
   recentQuotations: any[] = [];
 
+  // Gráfico de Linha - Cotações por Período
+  lineChartData: ChartConfiguration['data'] = {
+    datasets: [
+      {
+        data: [65, 59, 80, 81, 56, 55, 40],
+        label: 'Cotações',
+        backgroundColor: 'rgba(23, 162, 184, 0.2)',
+        borderColor: 'rgba(23, 162, 184, 1)',
+        pointBackgroundColor: 'rgba(23, 162, 184, 1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(23, 162, 184, 0.8)',
+        fill: 'origin',
+        tension: 0.4
+      }
+    ],
+    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho']
+  };
+
+  lineChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom'
+      },
+      tooltip: {
+        enabled: true,
+        mode: 'index',
+        intersect: false
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 10
+        }
+      }
+    }
+  };
+
+  lineChartType: ChartType = 'line';
+
+  // Gráfico de Pizza - Distribuição por Status
+  pieChartData: ChartData<'pie'> = {
+    labels: ['Aberto', 'Aguardando', 'Recebido', 'Enviado', 'Fechado'],
+    datasets: [{
+      data: [30, 25, 15, 20, 10],
+      backgroundColor: [
+        'rgba(23, 162, 184, 0.8)',   // Info - Cyan
+        'rgba(255, 193, 7, 0.8)',    // Warning - Yellow
+        'rgba(40, 167, 69, 0.8)',    // Success - Green
+        'rgba(0, 123, 255, 0.8)',    // Primary - Blue
+        'rgba(108, 117, 125, 0.8)'   // Secondary - Gray
+      ],
+      borderColor: [
+        'rgba(23, 162, 184, 1)',
+        'rgba(255, 193, 7, 1)',
+        'rgba(40, 167, 69, 1)',
+        'rgba(0, 123, 255, 1)',
+        'rgba(108, 117, 125, 1)'
+      ],
+      borderWidth: 1
+    }]
+  };
+
+  pieChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom'
+      },
+      tooltip: {
+        enabled: true
+      }
+    }
+  };
+
+  pieChartType: ChartType = 'pie';
+
   constructor(private api: ApiService) {}
 
   ngOnInit() {
@@ -106,12 +108,48 @@ export class DashboardComponent implements OnInit {
   }
 
   loadDashboard() {
+    // Load stats from API
+    this.api.getDashboardStats().subscribe(stats => {
+      this.stats = stats;
+    });
+
+    // Load quotations timeline
+    this.api.getDashboardQuotationsTimeline('monthly', 7).subscribe(timeline => {
+      this.lineChartData = {
+        datasets: [{
+          data: timeline.data,
+          label: 'Cotações',
+          backgroundColor: 'rgba(23, 162, 184, 0.2)',
+          borderColor: 'rgba(23, 162, 184, 1)',
+          pointBackgroundColor: 'rgba(23, 162, 184, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(23, 162, 184, 0.8)',
+          fill: 'origin',
+          tension: 0.4
+        }],
+        labels: timeline.labels
+      };
+    });
+
+    // Load quotations by status
+    this.api.getDashboardQuotationsByStatus().subscribe(statusData => {
+      this.pieChartData = {
+        labels: statusData.labels,
+        datasets: [{
+          data: statusData.data,
+          backgroundColor: statusData.backgroundColor,
+          borderColor: statusData.backgroundColor.map((color: string) =>
+            color.replace('0.8', '1')
+          ),
+          borderWidth: 1
+        }]
+      };
+    });
+
+    // Load recent quotations
     this.api.getQuotations().subscribe(quotations => {
       this.recentQuotations = quotations.slice(0, 10);
-      this.stats.total = quotations.length;
-      this.stats.open = quotations.filter(q => q.status === 'OPEN').length;
-      this.stats.waiting = quotations.filter(q => q.status === 'WAITING_SUPPLIERS').length;
-      this.stats.completed = quotations.filter(q => q.status === 'PROPOSAL_SENT').length;
     });
   }
 
@@ -123,7 +161,7 @@ export class DashboardComponent implements OnInit {
       'PROPOSAL_SENT': 'status-sent',
       'CLOSED': 'status-closed'
     };
-    return map[status] || 'bg-secondary';
+    return map[status] || 'badge-info';
   }
 
   getStatusLabel(status: string): string {

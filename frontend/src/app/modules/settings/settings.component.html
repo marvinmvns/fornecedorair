@@ -1,0 +1,184 @@
+<!-- Content Header -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-12">
+        <h1 class="m-0"><i class="fas fa-cog mr-2"></i>Configurações</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3">
+        <!-- Tabs navigation -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Menu</h3>
+          </div>
+          <div class="card-body p-0">
+            <ul class="nav nav-pills flex-column">
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')" style="cursor: pointer;">
+                  <i class="fas fa-user mr-2"></i> Perfil
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 'password'" (click)="setActiveTab('password')" style="cursor: pointer;">
+                  <i class="fas fa-lock mr-2"></i> Alterar Senha
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 'notifications'" (click)="setActiveTab('notifications')" style="cursor: pointer;">
+                  <i class="fas fa-bell mr-2"></i> Notificações
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 'system'" (click)="setActiveTab('system')" style="cursor: pointer;">
+                  <i class="fas fa-cogs mr-2"></i> Sistema
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-9">
+        <!-- Profile Tab -->
+        <div class="card" *ngIf="activeTab === 'profile'">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-user mr-2"></i>Informações do Perfil</h3>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="updateProfile()">
+              <div class="form-group">
+                <label for="name">Nome Completo</label>
+                <input type="text" class="form-control" id="name" [(ngModel)]="profileForm.name" name="name" required>
+              </div>
+              <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" class="form-control" id="email" [(ngModel)]="profileForm.email" name="email" required readonly>
+                <small class="form-text text-muted">O e-mail não pode ser alterado.</small>
+              </div>
+              <div class="form-group" *ngIf="currentUser">
+                <label>Função</label>
+                <input type="text" class="form-control" [value]="currentUser.role" readonly>
+              </div>
+              <div class="form-group" *ngIf="currentUser?.tenant">
+                <label>Empresa</label>
+                <input type="text" class="form-control" [value]="currentUser?.tenant?.name || ''" readonly>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save mr-2"></i>Salvar Alterações
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Password Tab -->
+        <div class="card" *ngIf="activeTab === 'password'">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-lock mr-2"></i>Alterar Senha</h3>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="changePassword()">
+              <div class="form-group">
+                <label for="currentPassword">Senha Atual</label>
+                <input type="password" class="form-control" id="currentPassword" [(ngModel)]="passwordForm.currentPassword" name="currentPassword" required>
+              </div>
+              <div class="form-group">
+                <label for="newPassword">Nova Senha</label>
+                <input type="password" class="form-control" id="newPassword" [(ngModel)]="passwordForm.newPassword" name="newPassword" required>
+                <small class="form-text text-muted">Mínimo de 8 caracteres.</small>
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirmar Nova Senha</label>
+                <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="passwordForm.confirmPassword" name="confirmPassword" required>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-key mr-2"></i>Alterar Senha
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Notifications Tab -->
+        <div class="card" *ngIf="activeTab === 'notifications'">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-bell mr-2"></i>Configurações de Notificações</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="emailNotifications" [(ngModel)]="notificationSettings.emailNotifications">
+                <label class="custom-control-label" for="emailNotifications">
+                  Receber notificações por e-mail
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="whatsappNotifications" [(ngModel)]="notificationSettings.whatsappNotifications">
+                <label class="custom-control-label" for="whatsappNotifications">
+                  Receber notificações por WhatsApp
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="newQuotations" [(ngModel)]="notificationSettings.newQuotations">
+                <label class="custom-control-label" for="newQuotations">
+                  Notificar sobre novas cotações
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="statusChanges" [(ngModel)]="notificationSettings.statusChanges">
+                <label class="custom-control-label" for="statusChanges">
+                  Notificar sobre mudanças de status
+                </label>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="saveNotificationSettings()">
+              <i class="fas fa-save mr-2"></i>Salvar Configurações
+            </button>
+          </div>
+        </div>
+
+        <!-- System Tab -->
+        <div class="card" *ngIf="activeTab === 'system'">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-cogs mr-2"></i>Informações do Sistema</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <th style="width: 200px;">Versão</th>
+                  <td>1.1.0</td>
+                </tr>
+                <tr>
+                  <th>Ambiente</th>
+                  <td>Desenvolvimento</td>
+                </tr>
+                <tr>
+                  <th>API URL</th>
+                  <td>http://localhost:3010/api/v1</td>
+                </tr>
+                <tr>
+                  <th>Tenant</th>
+                  <td *ngIf="currentUser?.tenant">{{ currentUser?.tenant?.name || '-' }}</td>
+                  <td *ngIf="!currentUser?.tenant">-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,93 @@
+<!-- Content Header -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-12">
+        <h1 class="m-0">Cotações</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="content">
+  <div class="container-fluid">
+    <!-- Filtros -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">Filtros</h3>
+            <div class="card-tools">
+              <select class="form-control form-control-sm" [(ngModel)]="statusFilter" (change)="loadQuotations()">
+                <option value="">Todos os status</option>
+                <option value="OPEN">Aberto</option>
+                <option value="WAITING_SUPPLIERS">Aguardando Fornecedores</option>
+                <option value="RECEIVED_SUPPLIERS">Cotações Recebidas</option>
+                <option value="PROPOSAL_SENT">Proposta Enviada</option>
+                <option value="CLOSED">Fechado</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Lista de Cotações</h3>
+            <div class="card-tools">
+              <span class="badge badge-info">{{ quotations.length }} cotações</span>
+            </div>
+          </div>
+          <div class="card-body table-responsive p-0">
+            <table class="table table-hover text-nowrap">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Cliente</th>
+                  <th>Descrição</th>
+                  <th>Área (m²)</th>
+                  <th>Cidade</th>
+                  <th>Origem</th>
+                  <th>Status</th>
+                  <th>Data</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let q of quotations">
+                  <td><span class="badge badge-info">#{{ q.id?.substring(0, 8) }}</span></td>
+                  <td>
+                    <strong>{{ q.installer?.name }}</strong><br>
+                    <small class="text-muted">{{ q.installer?.whatsappNumber }}</small>
+                  </td>
+                  <td>{{ q.description?.substring(0, 50) }}...</td>
+                  <td>{{ q.environmentAreaM2 || '-' }} m²</td>
+                  <td>{{ q.locationCity || '-' }}</td>
+                  <td><span class="badge badge-primary">{{ q.originChannel }}</span></td>
+                  <td><span class="badge" [ngClass]="getStatusClass(q.status)">{{ getStatusLabel(q.status) }}</span></td>
+                  <td>{{ q.createdAt | date:'dd/MM/yy HH:mm' }}</td>
+                  <td>
+                    <a [routerLink]="['/quotations', q.id]" class="btn btn-sm btn-primary">
+                      <i class="fas fa-eye"></i> Ver
+                    </a>
+                  </td>
+                </tr>
+                <tr *ngIf="quotations.length === 0">
+                  <td colspan="9" class="text-center text-muted py-4">
+                    <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                    Nenhuma cotação encontrada
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

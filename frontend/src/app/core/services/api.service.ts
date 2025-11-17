@@ -78,4 +78,23 @@ export class ApiService {
   sendOrderToInstaller(orderId: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/orders/${orderId}/send-to-installer`, {});
   }
+
+  // Dashboard
+  getDashboardStats(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/dashboard/stats`);
+  }
+
+  getDashboardInfoBoxes(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/dashboard/info-boxes`);
+  }
+
+  getDashboardQuotationsTimeline(period: string = 'monthly', months: number = 7): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/dashboard/quotations-timeline`, {
+      params: { period, months: months.toString() }
+    });
+  }
+
+  getDashboardQuotationsByStatus(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/dashboard/quotations-by-status`);
+  }
 }

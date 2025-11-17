@@ -6,33 +6,7 @@ import { ApiService } from '../../core/services/api.service';
   selector: 'app-quotation-detail',
   standalone: false,
   templateUrl: './quotation-detail.component.html',
-  styles: [`
-    .quote-card {
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .quote-card:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    .quote-card.selected {
-      border: 2px solid #4361ee;
-      background-color: #f0f4ff;
-    }
-    .chat-message {
-      padding: 0.8rem;
-      margin-bottom: 0.5rem;
-      border-radius: 8px;
-    }
-    .chat-message.inbound {
-      background-color: #e9ecef;
-      text-align: left;
-    }
-    .chat-message.outbound {
-      background-color: #4361ee;
-      color: white;
-      text-align: right;
-    }
-  `]
+  styles: []
 })
 export class QuotationDetailComponent implements OnInit {
   quotation: any = null;
@@ -168,5 +142,16 @@ Gostaria de prosseguir com esta proposta?`;
         this.loadQuotation(this.quotation.id);
       });
     });
+  }
+
+  getStatusLabel(status: string): string {
+    const map: any = {
+      'OPEN': 'Aberto',
+      'WAITING_SUPPLIERS': 'Aguardando Fornecedores',
+      'RECEIVED_SUPPLIERS': 'Cotações Recebidas',
+      'PROPOSAL_SENT': 'Proposta Enviada',
+      'CLOSED': 'Fechado'
+    };
+    return map[status] || status;
   }
 }

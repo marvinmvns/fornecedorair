@@ -1,74 +1,761 @@
-// Bootstrap and custom styles
-@use 'bootstrap/scss/bootstrap';
+/* ========================================
+   FornecedorAir - AdminLTE 3 Custom Styles
+   Template: AdminLTE 3 (https://github.com/ColorlibHQ/AdminLTE)
+   ======================================== */
 
-// Bsinx-inspired color scheme
-:root {
-  --primary-color: #4361ee;
-  --secondary-color: #3a0ca3;
-  --success-color: #06d6a0;
-  --danger-color: #ef476f;
-  --warning-color: #ffd60a;
-  --info-color: #4cc9f0;
-  --dark-color: #212529;
-  --light-color: #f8f9fa;
+/* AdminLTE and Bootstrap are imported via angular.json */
+
+/* ========================================
+   Custom Enhancements
+   ======================================== */
+
+/* Smooth transitions */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f6f9;
-  color: #333;
+/* ========================================
+   AdminLTE Layout Fix
+   ======================================== */
+
+/* Ensure proper layout structure */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-// Card styles
-.card {
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: none;
-  margin-bottom: 20px;
-}
-
-.card-header {
-  background-color: white;
-  border-bottom: 1px solid #e9ecef;
-  font-weight: 600;
-  padding: 1rem 1.5rem;
-}
-
-// Badge styles
-.badge {
-  padding: 0.5em 0.8em;
-  font-weight: 500;
-}
-
-// Button styles
-.btn {
-  border-radius: 6px;
-  padding: 0.5rem 1.2rem;
-  font-weight: 500;
-}
-
-// Sidebar
-.sidebar {
+.wrapper {
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  color: white;
+  position: relative;
 }
 
-// Main content
-.main-content {
-  padding: 2rem;
+/* Main Sidebar - Fixed positioning */
+.main-sidebar {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 250px;
+  z-index: 1038;
+  overflow-y: auto;
 }
 
-// Table styles
-.table {
-  background-color: white;
-  border-radius: 8px;
-  overflow: hidden;
+/* Main Header - Fixed at top */
+.main-header {
+  position: fixed !important;
+  top: 0;
+  right: 0;
+  left: 250px;
+  z-index: 1039;
+  transition: left 0.3s ease-in-out;
+  min-height: 57px;
+  height: auto;
+  box-shadow: 0 2px 4px rgba(0,0,0,.08);
+  background-color: #fff !important;
+
+  .navbar-nav {
+    align-items: center;
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+    }
+
+    .nav-item {
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: auto;
+        right: 0;
+        margin-top: 0;
+      }
+    }
+  }
+
+  .navbar-badge {
+    position: absolute;
+    right: 5px;
+    top: 8px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    padding: 2px 4px;
+  }
+
+  .user-image {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+  }
 }
 
-// Status badges
-.status-open { background-color: var(--info-color); }
-.status-waiting { background-color: var(--warning-color); color: #333; }
-.status-received { background-color: var(--success-color); }
-.status-sent { background-color: var(--primary-color); }
-.status-closed { background-color: var(--dark-color); }
+/* Content Wrapper - Main content area */
+.content-wrapper {
+  margin-left: 250px;
+  margin-top: 0;
+  padding-top: 70px;
+  min-height: calc(100vh - 70px);
+  transition: margin-left 0.3s ease-in-out;
+  background-color: #f4f6f9;
+  position: relative;
+  z-index: 1;
+
+  .content-header {
+    padding: 15px 0.5rem;
+
+    h1 {
+      font-size: 1.8rem;
+      margin: 0;
+    }
+  }
+
+  .content {
+    padding: 0 0.5rem 0.5rem 0.5rem;
+  }
+}
+
+/* ========================================
+   Main Footer - AdminLTE v3 Style
+   ======================================== */
+
+.main-footer {
+  background-color: #fff;
+  border-top: 1px solid #dee2e6;
+  color: #6c757d;
+  padding: 1rem;
+  margin-left: 250px;
+  transition: margin-left 0.3s ease-in-out;
+  font-size: 0.875rem;
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+
+    &:hover {
+      color: #0056b3;
+      text-decoration: underline;
+    }
+  }
+
+  strong {
+    font-weight: 600;
+    color: #495057;
+  }
+
+  .float-right {
+    b {
+      font-weight: 600;
+      margin-right: 0.25rem;
+    }
+  }
+}
+
+/* ========================================
+   Navbar Components - AdminLTE v3 Style
+   ======================================== */
+
+/* Navbar Dropdowns */
+.main-header {
+  .dropdown-menu {
+    z-index: 1040 !important;
+    position: absolute !important;
+    margin-top: 0 !important;
+  }
+
+  .navbar-search-block {
+    position: absolute;
+    display: none;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
+    padding: 10px;
+    z-index: 1040 !important;
+
+    &.show {
+      display: block;
+    }
+  }
+
+  .nav-item.dropdown {
+    position: relative;
+
+    .dropdown-toggle {
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  .navbar-badge {
+    border-radius: 10px;
+    line-height: 1;
+  }
+}
+
+/* Form Control Navbar */
+.form-control-navbar {
+  border: 1px solid #dee2e6;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+
+  &:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+}
+
+/* Navbar Nav */
+.navbar-nav {
+  .nav-item {
+    position: relative;
+  }
+
+  .nav-link {
+    position: relative;
+    color: #6c757d;
+
+    &:hover {
+      color: #495057;
+    }
+  }
+}
+
+/* User Menu Dropdown */
+.user-menu {
+  .dropdown-menu {
+    width: 280px;
+    padding: 0;
+    margin: 0;
+    border-radius: 0.25rem;
+  }
+
+  .user-header {
+    height: 175px;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+
+    img {
+      width: 90px;
+      height: 90px;
+      border: 3px solid rgba(255,255,255,0.2);
+      margin-top: 10px;
+    }
+
+    p {
+      z-index: 5;
+      color: #fff;
+      margin-top: 10px;
+
+      small {
+        display: block;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .user-body {
+    padding: 15px;
+    border-bottom: 1px solid #f4f4f4;
+  }
+
+  .user-footer {
+    background-color: #f9f9f9;
+    padding: 10px;
+
+    &::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+  }
+}
+
+/* Dropdown overlay fix */
+.dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1037;
+  background: transparent;
+}
+
+/* Sidebar collapsed state */
+body.sidebar-collapse {
+  .main-sidebar {
+    margin-left: -250px;
+  }
+
+  .main-header,
+  .content-wrapper,
+  .main-footer {
+    margin-left: 0;
+    left: 0;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 991.98px) {
+  .main-sidebar {
+    margin-left: -250px;
+  }
+
+  .main-header {
+    left: 0;
+  }
+
+  .content-wrapper,
+  .main-footer {
+    margin-left: 0;
+  }
+
+  body.sidebar-open {
+    .main-sidebar {
+      margin-left: 0;
+    }
+  }
+}
+
+/* ========================================
+   AdminLTE Components Enhancement
+   ======================================== */
+
+/* AdminLTE v3 Color Variables */
+.bg-info {
+  background-color: #17a2b8 !important;
+  color: #fff !important;
+}
+
+.bg-success {
+  background-color: #28a745 !important;
+  color: #fff !important;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+  color: #1f2d3d !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+  color: #fff !important;
+}
+
+.bg-primary {
+  background-color: #007bff !important;
+  color: #fff !important;
+}
+
+/* Small Boxes */
+.small-box {
+  border-radius: 0.25rem;
+  box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+  display: block;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1 !important;
+
+  > .inner {
+    padding: 10px;
+
+    h3 {
+      font-size: 2.2rem;
+      font-weight: bold;
+      margin: 0 0 10px;
+      padding: 0;
+      white-space: nowrap;
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  > .icon {
+    color: rgba(0,0,0,.15);
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 70px;
+    transition: transform .3s linear;
+  }
+
+  &:hover {
+    text-decoration: none;
+
+    .icon {
+      transform: scale(1.1);
+    }
+  }
+
+  &.bg-warning {
+    .inner {
+      h3, p {
+        color: #1f2d3d !important;
+      }
+    }
+  }
+
+  .small-box-footer {
+    background-color: rgba(0,0,0,.1);
+    color: rgba(255,255,255,.8);
+    display: block;
+    padding: 3px 10px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    z-index: 10;
+    border-radius: 0 0 0.25rem 0.25rem;
+
+    &:hover {
+      background-color: rgba(0,0,0,.15);
+      color: #fff;
+    }
+  }
+}
+
+.small-box.bg-warning .small-box-footer {
+  color: rgba(31,45,61,.8) !important;
+
+  &:hover {
+    color: rgba(31,45,61,1) !important;
+  }
+}
+
+/* Info Boxes */
+.info-box {
+  box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+  border-radius: 0.25rem;
+  background-color: #fff;
+  display: flex;
+  margin-bottom: 1rem;
+  min-height: 80px;
+  padding: 0.5rem;
+  position: relative;
+  width: 100%;
+  z-index: 1 !important;
+
+  .info-box-icon {
+    border-radius: 0.25rem;
+    align-items: center;
+    display: flex;
+    font-size: 1.875rem;
+    justify-content: center;
+    text-align: center;
+    width: 70px;
+
+    > img {
+      max-width: 100%;
+    }
+  }
+
+  .info-box-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.5;
+    flex: 1;
+    padding: 0 10px;
+  }
+
+  .info-box-number {
+    display: block;
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+
+  .info-box-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* Cards */
+.card {
+  box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+  position: relative;
+  z-index: 1 !important;
+
+  .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: 0.75rem 1.25rem;
+    position: relative;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+
+    .card-title {
+      float: left;
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    .card-tools {
+      float: right;
+      margin-right: -0.625rem;
+
+      .btn-tool {
+        background-color: transparent;
+        color: #6c757d;
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+        border: 0;
+
+        &:hover {
+          color: #495057;
+        }
+      }
+    }
+  }
+
+  .card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.25rem;
+  }
+
+  .card-footer {
+    background-color: rgba(0,0,0,.03);
+    border-top: 1px solid rgba(0,0,0,.125);
+    padding: 0.75rem 1.25rem;
+  }
+
+  &.bg-gradient-success {
+    background: linear-gradient(180deg, #28a745, #1e7e34) !important;
+    color: #fff;
+
+    .card-header {
+      border-bottom-color: rgba(255,255,255,.2);
+    }
+  }
+}
+
+/* Status badges (sistema específico) */
+.status-open {
+  background-color: #17a2b8 !important;
+  color: #fff !important;
+}
+
+.status-waiting {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.status-received {
+  background-color: #28a745 !important;
+  color: #fff !important;
+}
+
+.status-sent {
+  background-color: #007bff !important;
+  color: #fff !important;
+}
+
+.status-closed {
+  background-color: #6c757d !important;
+  color: #fff !important;
+}
+
+/* Chart placeholders */
+.chart-placeholder {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Tables in cards */
+.card .table {
+  margin-bottom: 0;
+
+  thead tr th {
+    border-top: 0;
+    border-bottom-width: 1px;
+  }
+
+  tbody tr:first-child td {
+    border-top: 0;
+  }
+
+  th,
+  td {
+    padding: 0.75rem;
+  }
+}
+
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  > .table-bordered {
+    border: 0;
+  }
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  background-color: transparent;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+/* Buttons */
+.btn-xs {
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}
+
+/* Clearfix */
+.clearfix::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+/* ========================================
+   Custom Scrollbar - AdminLTE v3 Style
+   ======================================== */
+
+/* Scrollbar padrão para o body e conteúdo geral */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e9ecef;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #adb5bd;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6c757d;
+  background-clip: content-box;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #adb5bd #e9ecef;
+}
+
+/* Scrollbar do Sidebar - mais escuro */
+.main-sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    border: none;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Scrollbar da Content Area */
+.content-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: #adb5bd #f4f6f9;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f4f6f9;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #adb5bd;
+    border-radius: 10px;
+    border: 2px solid #f4f6f9;
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+    background-clip: content-box;
+  }
+}
+
+/* Scrollbar em Cards */
+.card .card-body {
+  scrollbar-width: thin;
+  scrollbar-color: #ced4da #fff;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #fff;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #ced4da;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #adb5bd;
+  }
+}
+
+/* Scrollbar em Tabelas */
+.table-responsive {
+  scrollbar-width: thin;
+  scrollbar-color: #ced4da #f8f9fa;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f8f9fa;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #ced4da;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #adb5bd;
+  }
+}

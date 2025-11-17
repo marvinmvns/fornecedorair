@@ -1,0 +1,307 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-12">
+        <h1 class="m-0">Dashboard</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="container-fluid">
+  <!-- Small boxes (Stat box) -->
+  <div class="row">
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-info">
+        <div class="inner">
+          <h3>{{ stats.open }}</h3>
+          <p>Cotações Abertas</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-bag"></i>
+        </div>
+        <a routerLink="/quotations" class="small-box-footer">
+          Mais informações <i class="fas fa-arrow-circle-right"></i>
+        </a>
+      </div>
+    </div>
+    <!-- ./col -->
+
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3>{{ stats.waiting }}<sup style="font-size: 20px">%</sup></h3>
+          <p>Aguardando Fornecedores</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+        </div>
+        <a routerLink="/quotations" class="small-box-footer">
+          Mais informações <i class="fas fa-arrow-circle-right"></i>
+        </a>
+      </div>
+    </div>
+    <!-- ./col -->
+
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-warning">
+        <div class="inner">
+          <h3>{{ stats.completed }}</h3>
+          <p>Propostas Enviadas</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-person-add"></i>
+        </div>
+        <a routerLink="/quotations" class="small-box-footer">
+          Mais informações <i class="fas fa-arrow-circle-right"></i>
+        </a>
+      </div>
+    </div>
+    <!-- ./col -->
+
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-danger">
+        <div class="inner">
+          <h3>{{ stats.total }}</h3>
+          <p>Total do Mês</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-pie-graph"></i>
+        </div>
+        <a routerLink="/quotations" class="small-box-footer">
+          Mais informações <i class="fas fa-arrow-circle-right"></i>
+        </a>
+      </div>
+    </div>
+    <!-- ./col -->
+  </div>
+  <!-- /.row -->
+
+  <!-- Info boxes -->
+  <div class="row">
+    <div class="col-md-3 col-sm-6 col-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-info"><i class="fas fa-envelope"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Mensagens WhatsApp</span>
+          <span class="info-box-number">1,410</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 col-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-success"><i class="fas fa-store"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Fornecedores Ativos</span>
+          <span class="info-box-number">24</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 col-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-warning"><i class="fas fa-users"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Instaladores</span>
+          <span class="info-box-number">156</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 col-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-danger"><i class="fas fa-box-open"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Produtos</span>
+          <span class="info-box-number">89</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.row -->
+
+  <!-- Main row -->
+  <div class="row">
+    <!-- Left col -->
+    <div class="col-md-8">
+      <!-- Chart Card -->
+      <div class="card">
+        <div class="card-header border-transparent">
+          <h3 class="card-title">
+            <i class="fas fa-chart-line mr-1"></i>
+            Cotações por Período
+          </h3>
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="height: 300px; position: relative;">
+            <canvas baseChart
+              [data]="lineChartData"
+              [options]="lineChartOptions"
+              [type]="lineChartType">
+            </canvas>
+          </div>
+        </div>
+      </div>
+      <!-- /.card -->
+
+      <!-- Recent Quotations -->
+      <div class="card">
+        <div class="card-header border-transparent">
+          <h3 class="card-title">Últimas Cotações</h3>
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table m-0">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Cliente</th>
+                  <th>Origem</th>
+                  <th>Status</th>
+                  <th>Data</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let q of recentQuotations">
+                  <td>
+                    <span class="badge badge-info">#{{ q.id?.substring(0, 8) }}</span>
+                  </td>
+                  <td>{{ q.installer?.name || 'N/A' }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="q.originChannel === 'WHATSAPP' ? 'badge-success' : 'badge-primary'">
+                      <i class="fab fa-{{ q.originChannel === 'WHATSAPP' ? 'whatsapp' : 'globe' }}"></i>
+                      {{ q.originChannel }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusClass(q.status)">
+                      {{ getStatusLabel(q.status) }}
+                    </span>
+                  </td>
+                  <td>
+                    <small>{{ q.createdAt | date:'dd/MM/yy HH:mm' }}</small>
+                  </td>
+                  <td>
+                    <a [routerLink]="['/quotations', q.id]" class="btn btn-xs btn-primary">
+                      <i class="fas fa-eye"></i>
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Empty state -->
+                <tr *ngIf="recentQuotations.length === 0">
+                  <td colspan="6" class="text-center py-4">
+                    <i class="fas fa-inbox text-muted" style="font-size: 2rem;"></i>
+                    <p class="text-muted mt-2 mb-0">Nenhuma cotação encontrada</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.table-responsive -->
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer clearfix">
+          <a routerLink="/quotations" class="btn btn-sm btn-primary float-right">Ver todas as cotações</a>
+        </div>
+        <!-- /.card-footer -->
+      </div>
+      <!-- /.card -->
+    </div>
+    <!-- /.col -->
+
+    <!-- Right col -->
+    <div class="col-md-4">
+      <!-- Calendar -->
+      <div class="card bg-gradient-success">
+        <div class="card-header border-0">
+          <h3 class="card-title">
+            <i class="far fa-calendar-alt"></i>
+            Calendário
+          </h3>
+          <div class="card-tools">
+            <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body pt-0">
+          <div class="text-center py-4">
+            <i class="far fa-calendar-alt" style="font-size: 3rem; opacity: 0.5;"></i>
+            <p class="mt-3">Calendário (integrar)</p>
+          </div>
+        </div>
+      </div>
+      <!-- /.card -->
+
+      <!-- Status Distribution -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-chart-pie mr-1"></i>
+            Distribuição por Status
+          </h3>
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="height: 250px; position: relative;">
+            <canvas baseChart
+              [data]="pieChartData"
+              [options]="pieChartOptions"
+              [type]="pieChartType">
+            </canvas>
+          </div>
+        </div>
+      </div>
+      <!-- /.card -->
+
+      <!-- Quick Actions -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Ações Rápidas</h3>
+        </div>
+        <div class="card-body">
+          <button class="btn btn-primary btn-block mb-2">
+            <i class="fas fa-plus mr-2"></i>
+            Nova Cotação
+          </button>
+          <button class="btn btn-success btn-block mb-2">
+            <i class="fab fa-whatsapp mr-2"></i>
+            Abrir Chat
+          </button>
+          <button class="btn btn-info btn-block">
+            <i class="fas fa-store mr-2"></i>
+            Ver Fornecedores
+          </button>
+        </div>
+      </div>
+      <!-- /.card -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</div>
+<!-- /.container-fluid -->

@@ -6,7 +6,8 @@ interface CadastroOption {
   description: string;
   icon: string;
   route: string;
-  color: string;
+  iconBgClass: string;
+  cardClass: string;
 }
 
 @Component({
@@ -19,31 +20,35 @@ export class CadastroListComponent {
   cadastroOptions: CadastroOption[] = [
     {
       title: 'Usuários',
-      description: 'Gerenciar usuários do sistema',
-      icon: 'people',
+      description: 'Gerenciar usuários',
+      icon: 'fas fa-users',
       route: '/cadastro/users',
-      color: '#3f51b5'
+      iconBgClass: 'bg-info',
+      cardClass: 'card-info'
     },
     {
       title: 'Fornecedores',
-      description: 'Gerenciar fornecedores de equipamentos',
-      icon: 'store',
+      description: 'Gerenciar fornecedores',
+      icon: 'fas fa-store',
       route: '/cadastro/suppliers',
-      color: '#ff9800'
+      iconBgClass: 'bg-warning',
+      cardClass: 'card-warning'
     },
     {
       title: 'Instaladores',
-      description: 'Gerenciar instaladores parceiros',
-      icon: 'build',
+      description: 'Gerenciar instaladores',
+      icon: 'fas fa-tools',
       route: '/cadastro/installers',
-      color: '#4caf50'
+      iconBgClass: 'bg-success',
+      cardClass: 'card-success'
     },
     {
-      title: 'Modelos de Ar-Condicionado',
-      description: 'Gerenciar catálogo de produtos',
-      icon: 'ac_unit',
+      title: 'Modelos',
+      description: 'Gerenciar catálogo',
+      icon: 'fas fa-wind',
       route: '/cadastro/models',
-      color: '#2196f3'
+      iconBgClass: 'bg-primary',
+      cardClass: 'card-primary'
     }
   ];
 

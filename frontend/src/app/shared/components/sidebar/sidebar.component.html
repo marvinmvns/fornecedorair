@@ -1,0 +1,158 @@
+<!-- Main Sidebar Container - AdminLTE 3 Style -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a routerLink="/dashboard" class="brand-link">
+    <i class="brand-image fas fa-wind elevation-3" style="opacity: .8; margin-left: .8rem; margin-right: .5rem; margin-top: -3px; max-height: 33px; width: auto; font-size: 1.8rem;"></i>
+    <span class="brand-text font-weight-light">FornecedorAir</span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <div class="user-avatar">
+          {{ getUserInitials() }}
+        </div>
+      </div>
+      <div class="info">
+        <a routerLink="/profile" class="d-block">{{ getUserDisplayName() }}</a>
+        <small class="d-block text-muted">{{ getUserRole() }}</small>
+      </div>
+    </div>
+
+    <!-- Sidebar Search Form -->
+    <div class="form-inline mb-3">
+      <div class="input-group" data-widget="sidebar-search">
+        <input
+          class="form-control form-control-sidebar"
+          type="search"
+          placeholder="Buscar..."
+          aria-label="Buscar"
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="onSearch()">
+        <div class="input-group-append">
+          <button class="btn btn-sidebar" (click)="onSearch()">
+            <i class="fas fa-search fa-fw"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+        <!-- Dashboard -->
+        <li class="nav-item">
+          <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>Dashboard</p>
+          </a>
+        </li>
+
+        <!-- Cotações -->
+        <li class="nav-item">
+          <a routerLink="/quotations" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fas fa-file-invoice"></i>
+            <p>
+              Cotações
+              <span class="right badge badge-primary">12</span>
+            </p>
+          </a>
+        </li>
+
+        <!-- Chat WhatsApp -->
+        <li class="nav-item">
+          <a routerLink="/chat" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fab fa-whatsapp"></i>
+            <p>
+              Chat WhatsApp
+              <span class="right badge badge-danger">3</span>
+            </p>
+          </a>
+        </li>
+
+        <!-- Divider -->
+        <li class="nav-header">GESTÃO</li>
+
+        <!-- Cadastros (com submenu) -->
+        <li class="nav-item has-treeview" [class.menu-open]="cadastrosExpanded">
+          <a href="#" class="nav-link" (click)="toggleCadastros(); $event.preventDefault()">
+            <i class="nav-icon fas fa-database"></i>
+            <p>
+              Cadastros
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview" [style.display]="cadastrosExpanded ? 'block' : 'none'">
+            <li class="nav-item">
+              <a routerLink="/cadastro/users" routerLinkActive="active" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Usuários</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/cadastro/suppliers" routerLinkActive="active" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Fornecedores</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/cadastro/installers" routerLinkActive="active" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Instaladores</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/cadastro/models" routerLinkActive="active" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Modelos</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Catálogo -->
+        <li class="nav-item">
+          <a routerLink="/catalog" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fas fa-box-open"></i>
+            <p>Catálogo</p>
+          </a>
+        </li>
+
+        <!-- Fornecedores -->
+        <li class="nav-item">
+          <a routerLink="/suppliers" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fas fa-truck"></i>
+            <p>Fornecedores</p>
+          </a>
+        </li>
+
+        <!-- Divider -->
+        <li class="nav-header">SISTEMA</li>
+
+        <!-- Configurações -->
+        <li class="nav-item">
+          <a routerLink="/settings" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fas fa-cog"></i>
+            <p>Configurações</p>
+          </a>
+        </li>
+
+        <!-- Versão -->
+        <li class="nav-item">
+          <a class="nav-link" style="cursor: default; opacity: 0.6;">
+            <i class="nav-icon fas fa-info-circle"></i>
+            <p>
+              Versão 1.1.0
+              <span class="right badge badge-success">v1.1</span>
+            </p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

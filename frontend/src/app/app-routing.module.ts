@@ -55,6 +55,21 @@ const routes: Routes = [
     data: { roles: [UserRole.ADMIN] }
   },
 
+  // Chat WhatsApp - requer autenticação (ADMIN, SALES_MANAGER, ATTENDANT)
+  {
+    path: 'chat',
+    loadChildren: () => import('./modules/chat/chat.module').then(m => m.ChatModule),
+    canActivate: [AuthGuard],
+    data: { roles: [UserRole.ADMIN, UserRole.SALES_MANAGER, UserRole.ATTENDANT] }
+  },
+
+  // Configurações - requer autenticação
+  {
+    path: 'settings',
+    loadChildren: () => import('./modules/settings/settings.module').then(m => m.SettingsModule),
+    canActivate: [AuthGuard]
+  },
+
   // Rota wildcard - redireciona para dashboard
   { path: '**', redirectTo: '/dashboard' }
 ];

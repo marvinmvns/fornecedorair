@@ -1,47 +1,61 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { AuthService } from '../../../core/services/auth.service';
+import { User } from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-sidebar',
   standalone: false,
-  template: `
-    <div class="sidebar p-3" style="width: 250px;">
-      <div class="text-center mb-4">
-        <h4 class="text-white mb-0">FornecedorAir</h4>
-        <small class="text-white-50">Sistema de Cotações</small>
-      </div>
-
-      <nav class="nav flex-column">
-        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link text-white">
-          <i class="bi bi-speedometer2 me-2"></i> Dashboard
-        </a>
-        <a routerLink="/quotations" routerLinkActive="active" class="nav-link text-white">
-          <i class="bi bi-file-earmark-text me-2"></i> Cotações
-        </a>
-        <a routerLink="/catalog" routerLinkActive="active" class="nav-link text-white">
-          <i class="bi bi-box me-2"></i> Catálogo
-        </a>
-        <a routerLink="/suppliers" routerLinkActive="active" class="nav-link text-white">
-          <i class="bi bi-building me-2"></i> Fornecedores
-        </a>
-        <a routerLink="/cadastro" routerLinkActive="active" class="nav-link text-white">
-          <i class="bi bi-database me-2"></i> Cadastros
-        </a>
-      </nav>
-    </div>
-  `,
-  styles: [`
-    .nav-link {
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
-      transition: all 0.3s;
-    }
-    .nav-link:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-    .nav-link.active {
-      background-color: rgba(255, 255, 255, 0.2);
-      font-weight: 600;
-    }
-  `]
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {}
+export class SidebarComponent implements OnInit {
+  @Input() isCollapsed = false;
+
+  currentUser: User | null = null;
+  cadastrosExpanded = false;
+  searchQuery = '';
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
+  }
+
+  toggleCadastros(): void {
+    this.cadastrosExpanded = !this.cadastrosExpanded;
+  }
+
+  onSearch(): void {
+    // Implementar busca no menu se necessário
+    if (this.searchQuery) {
+      console.log('Buscando:', this.searchQuery);
+    }
+  }
+
+  getUserInitials(): string {
+    if (!this.currentUser?.name) {
+      return 'U';
+    }
+    const names = this.currentUser.name.split(' ');
+    if (names.length >= 2) {
+      return (names[0][0] + names[names.length - 1][0]).toUpperCase();
+    }
+    return names[0][0].toUpperCase();
+  }
+
+  getUserDisplayName(): string {
+    return this.currentUser?.name || 'Usuário';
+  }
+
+  getUserRole(): string {
+    const roleMap: { [key: string]: string } = {
+      'ADMIN': 'Administrador',
+      'SALES_MANAGER': 'Gerente de Vendas',
+      'ATTENDANT': 'Atendente',
+      'VIEW_ONLY': 'Visualizador'
+    };
+    return roleMap[this.currentUser?.role || ''] || 'Usuário';
+  }
+}

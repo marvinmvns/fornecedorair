@@ -1,0 +1,177 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-12">
+        <h1 class="m-0">Chat WhatsApp</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="container-fluid">
+  <!-- Info boxes -->
+  <div class="row">
+    <div class="col-md-3 col-sm-6 col-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-info"><i class="fab fa-whatsapp"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Total de Conversas</span>
+          <span class="info-box-number">{{ stats.totalConversations || 0 }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 col-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-success"><i class="fas fa-check-circle"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Conversas Ativas</span>
+          <span class="info-box-number">{{ stats.activeConversations || 0 }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 col-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-danger"><i class="fas fa-envelope"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Não Lidas</span>
+          <span class="info-box-number">{{ stats.unreadMessages || 0 }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 col-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-warning"><i class="fas fa-clock"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Tempo Médio</span>
+          <span class="info-box-number">{{ stats.averageResponseTime || 0 }}m</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main row -->
+  <div class="row">
+    <!-- Conversations List -->
+    <div class="col-md-4">
+      <div class="card direct-chat direct-chat-primary">
+        <div class="card-header">
+          <h3 class="card-title">Conversas</h3>
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body" style="padding: 0;">
+          <!-- Search -->
+          <div class="p-3 border-bottom">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" placeholder="Buscar..." [(ngModel)]="searchTerm">
+              <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Conversations -->
+          <div class="direct-chat-contacts" style="position: relative; display: block; height: 500px; overflow-y: auto;">
+            <ul class="contacts-list" style="padding: 0; margin: 0; list-style: none;">
+              <li *ngFor="let conv of conversations"
+                  (click)="selectConversation(conv)"
+                  [class.active]="selectedConversation?.id === conv.id"
+                  style="cursor: pointer; border-bottom: 1px solid #f4f4f4; padding: 10px;">
+                <a style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+                  <img class="contacts-list-img" src="assets/img/user-default.png" alt="User Image"
+                       style="width: 40px; height: 40px; border-radius: 50%;">
+                  <div class="contacts-list-info" style="margin-left: 10px; flex: 1;">
+                    <span class="contacts-list-name" style="display: block; font-weight: 600;">
+                      {{ conv.contactName }}
+                      <small class="contacts-list-date float-right">{{ formatTime(conv.lastMessageTime) }}</small>
+                    </span>
+                    <span class="contacts-list-msg" style="display: block; color: #999; font-size: 0.875rem;">{{ conv.lastMessage }}</span>
+                  </div>
+                  <span *ngIf="conv.unreadCount > 0" class="badge badge-danger badge-pill" style="margin-left: 5px;">
+                    {{ conv.unreadCount }}
+                  </span>
+                </a>
+              </li>
+
+              <!-- Empty State -->
+              <li *ngIf="conversations.length === 0" class="text-center py-5">
+                <i class="fas fa-inbox" style="font-size: 3rem; color: #ddd;"></i>
+                <p class="text-muted mt-3">Nenhuma conversa</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="col-md-8">
+      <div class="card direct-chat direct-chat-primary">
+        <div class="card-header" *ngIf="selectedConversation">
+          <h3 class="card-title">{{ selectedConversation.contactName }}</h3>
+          <div class="card-tools">
+            <button *ngIf="selectedConversation.quotationId" class="btn btn-sm btn-primary mr-2">
+              <i class="fas fa-file-invoice mr-1"></i>
+              Ver Cotação
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <!-- Empty State -->
+          <div *ngIf="!selectedConversation" class="text-center py-5">
+            <i class="fab fa-whatsapp" style="font-size: 5rem; color: #25D366; opacity: 0.3;"></i>
+            <h5 class="mt-4 text-muted">Selecione uma conversa</h5>
+            <p class="text-muted">Escolha uma conversa à esquerda para começar</p>
+          </div>
+
+          <!-- Messages -->
+          <div *ngIf="selectedConversation" class="direct-chat-messages" style="height: 450px;" #messagesContainer>
+            <div *ngFor="let message of messages"
+                 class="direct-chat-msg"
+                 [class.right]="message.sender === 'agent'">
+              <div class="direct-chat-infos clearfix">
+                <span class="direct-chat-name" [class.float-left]="message.sender !== 'agent'" [class.float-right]="message.sender === 'agent'">
+                  {{ message.sender === 'agent' ? 'Você' : message.senderName }}
+                </span>
+                <span class="direct-chat-timestamp" [class.float-right]="message.sender !== 'agent'" [class.float-left]="message.sender === 'agent'">
+                  {{ formatMessageTime(message.timestamp) }}
+                </span>
+              </div>
+              <img class="direct-chat-img" src="assets/img/user-default.png" alt="message user image">
+              <div class="direct-chat-text">
+                {{ message.content }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer" *ngIf="selectedConversation">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   placeholder="Digite sua mensagem..."
+                   [(ngModel)]="newMessage"
+                   (keyup.enter)="sendMessage()">
+            <span class="input-group-append">
+              <button type="button" class="btn btn-primary" (click)="sendMessage()" [disabled]="!newMessage.trim()">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

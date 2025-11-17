@@ -1,93 +1,66 @@
-.login-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* AdminLTE 4 Login Page - Custom Enhancements */
+
+.login-page {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
 }
 
-.login-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  padding: 40px;
-  width: 100%;
-  max-width: 420px;
+.login-box {
+  width: 400px;
 }
 
-.login-header {
+.login-logo {
+  font-size: 2.1rem;
+  font-weight: 300;
+  margin-bottom: 0.9rem;
   text-align: center;
-  margin-bottom: 30px;
 
-  h2 {
-    color: #333;
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
+  a {
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 
-  p {
-    color: #666;
-    font-size: 14px;
-    margin: 0;
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
 
-.form-group {
-  label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-    font-weight: 600;
-    font-size: 14px;
-  }
-
-  input {
-    height: 48px;
-    font-size: 15px;
-  }
+.card {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
-.btn-primary {
-  height: 48px;
-  font-size: 16px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-
-  &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-  }
+.login-box-msg {
+  margin: 0;
+  padding: 0 20px 20px;
+  text-align: center;
+  color: #6c757d;
+  font-weight: 500;
 }
 
-.test-credentials {
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border-left: 4px solid #667eea;
-
-  p {
-    margin-bottom: 8px;
-  }
-
-  div {
-    line-height: 1.8;
-  }
+.card-footer {
+  padding: 1rem;
+  border-top: 1px solid rgba(0,0,0,.125);
 }
 
-.alert {
-  border-radius: 8px;
-  font-size: 14px;
+/* iCheck checkbox styling */
+.icheck-primary > input:first-child:not(:checked):not(:disabled):hover + label::before,
+.icheck-primary > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+  border-color: #007bff;
 }
 
-// Responsividade
-@media (max-width: 480px) {
-  .login-card {
-    padding: 30px 20px;
+.icheck-primary > input:first-child:checked + label::before,
+.icheck-primary > input:first-child:checked + input[type="hidden"] + label::before {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .login-box {
+    width: 90%;
+    margin-top: 20px;
   }
 
-  .login-header h2 {
-    font-size: 24px;
+  .login-logo {
+    font-size: 1.8rem;
   }
 }

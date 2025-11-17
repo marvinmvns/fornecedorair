@@ -1,76 +1,96 @@
-<div class="login-container">
-  <div class="login-card">
-    <div class="login-header">
-      <h2>FornecedorAir</h2>
-      <p>Sistema de Cotação de Ar-Condicionado</p>
+<div class="login-page">
+  <div class="login-box">
+    <!-- Logo -->
+    <div class="login-logo">
+      <a href="#"><b>Fornecedor</b>Air</a>
     </div>
+    <!-- /.login-logo -->
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <!-- Alert de erro -->
-      <div class="alert alert-danger" *ngIf="error" role="alert">
-        {{ error }}
-      </div>
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg">Entre com suas credenciais</p>
 
-      <!-- Campo Email -->
-      <div class="form-group mb-3">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          formControlName="email"
-          class="form-control"
-          [class.is-invalid]="f['email'].invalid && f['email'].touched"
-          placeholder="seu@email.com"
-        />
-        <div class="invalid-feedback" *ngIf="f['email'].invalid && f['email'].touched">
-          <span *ngIf="f['email'].errors?.['required']">Email é obrigatório</span>
-          <span *ngIf="f['email'].errors?.['email']">Email inválido</span>
+        <!-- Alert de erro -->
+        <div class="alert alert-danger alert-dismissible" *ngIf="error" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="error = ''">×</button>
+          <i class="icon fas fa-ban"></i> {{ error }}
         </div>
-      </div>
 
-      <!-- Campo Senha -->
-      <div class="form-group mb-3">
-        <label for="password">Senha</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          class="form-control"
-          [class.is-invalid]="f['password'].invalid && f['password'].touched"
-          placeholder="••••••••"
-        />
-        <div class="invalid-feedback" *ngIf="f['password'].invalid && f['password'].touched">
-          <span *ngIf="f['password'].errors?.['required']">Senha é obrigatória</span>
-          <span *ngIf="f['password'].errors?.['minlength']">Senha deve ter no mínimo 6 caracteres</span>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <!-- Email -->
+          <div class="input-group mb-3">
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Email"
+              formControlName="email"
+              [class.is-invalid]="f['email'].invalid && f['email'].touched">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+            <div class="invalid-feedback" *ngIf="f['email'].invalid && f['email'].touched">
+              <span *ngIf="f['email'].errors?.['required']">Email é obrigatório</span>
+              <span *ngIf="f['email'].errors?.['email']">Email inválido</span>
+            </div>
+          </div>
+
+          <!-- Senha -->
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Senha"
+              formControlName="password"
+              [class.is-invalid]="f['password'].invalid && f['password'].touched">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+            <div class="invalid-feedback" *ngIf="f['password'].invalid && f['password'].touched">
+              <span *ngIf="f['password'].errors?.['required']">Senha é obrigatória</span>
+              <span *ngIf="f['password'].errors?.['minlength']">Senha deve ter no mínimo 6 caracteres</span>
+            </div>
+          </div>
+
+          <!-- Botões -->
+          <div class="row">
+            <div class="col-8">
+              <div class="icheck-primary">
+                <input type="checkbox" id="remember">
+                <label for="remember">
+                  Lembrar-me
+                </label>
+              </div>
+            </div>
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary btn-block" [disabled]="loading || loginForm.invalid">
+                <span *ngIf="!loading">Entrar</span>
+                <span *ngIf="loading">
+                  <i class="fas fa-spinner fa-spin"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <p class="mb-1 mt-3">
+          <a href="#">Esqueci minha senha</a>
+        </p>
+      </div>
+      <!-- /.login-card-body -->
+
+      <!-- Credenciais de teste -->
+      <div class="card-footer bg-light">
+        <p class="mb-1 text-center"><small><strong>Credenciais de Teste</strong></small></p>
+        <div class="text-center small">
+          <div><strong>Admin:</strong> admin@alpha.com</div>
+          <div><strong>Atendente:</strong> attendant@alpha.com</div>
+          <div><strong>Gerente:</strong> sales_manager@alpha.com</div>
+          <div class="mt-1"><em>Senha: password123</em></div>
         </div>
-      </div>
-
-      <!-- Botão de Login -->
-      <button
-        type="submit"
-        class="btn btn-primary w-100 mb-3"
-        [disabled]="loading || loginForm.invalid"
-      >
-        <span *ngIf="!loading">Entrar</span>
-        <span *ngIf="loading">
-          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          Entrando...
-        </span>
-      </button>
-
-      <!-- Link de esqueci a senha -->
-      <div class="text-center">
-        <a href="#" class="text-muted small">Esqueceu sua senha?</a>
-      </div>
-    </form>
-
-    <!-- Credenciais de teste (remover em produção) -->
-    <div class="test-credentials mt-4">
-      <p class="small text-muted mb-2"><strong>Credenciais de Teste:</strong></p>
-      <div class="small text-muted">
-        <div><strong>Admin:</strong> admin@alpha.com / password123</div>
-        <div><strong>Atendente:</strong> attendant@alpha.com / password123</div>
-        <div><strong>Gerente:</strong> sales_manager@alpha.com / password123</div>
       </div>
     </div>
   </div>

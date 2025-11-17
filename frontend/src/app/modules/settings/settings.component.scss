@@ -1,0 +1,52 @@
+// Settings component styles
+.nav-pills {
+  .nav-link {
+    color: #6c757d;
+    border-radius: 0.25rem;
+
+    &:hover {
+      background-color: #f8f9fa;
+    }
+
+    &.active {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    i {
+      width: 20px;
+      text-align: center;
+    }
+  }
+}
+
+.card {
+  box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+
+  .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin: 0;
+
+      i {
+        color: #6c757d;
+      }
+    }
+  }
+}
+
+.custom-control-label {
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.table {
+  th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+  }
+}

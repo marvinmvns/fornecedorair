@@ -1,0 +1,178 @@
+<!-- Content Header -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-12">
+        <h1 class="m-0">
+          <i class="fas fa-store mr-2"></i>
+          Detalhes do Fornecedor
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Carregando...</span>
+      </div>
+      <p class="mt-3">Carregando dados do fornecedor...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="alert alert-danger">
+      <i class="fas fa-exclamation-triangle mr-2"></i>
+      {{ error }}
+    </div>
+
+    <!-- Supplier Details -->
+    <div *ngIf="supplier && !loading">
+      <!-- Action Buttons -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <button class="btn btn-secondary" (click)="goBack()">
+            <i class="fas fa-arrow-left mr-2"></i>Voltar
+          </button>
+          <button class="btn btn-primary ml-2" (click)="editSupplier()">
+            <i class="fas fa-edit mr-2"></i>Editar
+          </button>
+          <button class="btn btn-danger ml-2" (click)="deleteSupplier()">
+            <i class="fas fa-trash mr-2"></i>Excluir
+          </button>
+          <button class="btn ml-2"
+                  [ngClass]="supplier.isActive ? 'btn-warning' : 'btn-success'"
+                  (click)="toggleStatus()">
+            <i class="fas fa-power-off mr-2"></i>
+            {{ supplier.isActive ? 'Desativar' : 'Ativar' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Supplier Info Card -->
+      <div class="row">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="fas fa-info-circle mr-2"></i>Informações Básicas</h3>
+            </div>
+            <div class="card-body">
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <th style="width: 200px;">Nome</th>
+                    <td>{{ supplier.name }}</td>
+                  </tr>
+                  <tr>
+                    <th>Status</th>
+                    <td>
+                      <span class="badge" [ngClass]="supplier.isActive ? 'badge-success' : 'badge-secondary'">
+                        {{ supplier.isActive ? 'Ativo' : 'Inativo' }}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr *ngIf="supplier.whatsappNumber">
+                    <th>WhatsApp</th>
+                    <td>
+                      <i class="fab fa-whatsapp text-success mr-2"></i>
+                      {{ supplier.whatsappNumber }}
+                    </td>
+                  </tr>
+                  <tr *ngIf="supplier.email">
+                    <th>E-mail</th>
+                    <td>
+                      <i class="fas fa-envelope text-primary mr-2"></i>
+                      {{ supplier.email }}
+                    </td>
+                  </tr>
+                  <tr *ngIf="supplier.apiUrl">
+                    <th>API URL</th>
+                    <td>
+                      <i class="fas fa-link text-info mr-2"></i>
+                      <a [href]="supplier.apiUrl" target="_blank">{{ supplier.apiUrl }}</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Lead Time Médio</th>
+                    <td>
+                      <i class="fas fa-clock text-warning mr-2"></i>
+                      {{ supplier.averageLeadTimeDays }} dias
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Cadastrado em</th>
+                    <td>{{ supplier.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+                  </tr>
+                  <tr>
+                    <th>Última atualização</th>
+                    <td>{{ supplier.updatedAt | date:'dd/MM/yyyy HH:mm' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <!-- Stats Card -->
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title"><i class="fas fa-chart-bar mr-2"></i>Estatísticas</h3>
+            </div>
+            <div class="card-body">
+              <div class="info-box bg-light">
+                <span class="info-box-icon bg-primary">
+                  <i class="fas fa-file-invoice"></i>
+                </span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Cotações Recebidas</span>
+                  <span class="info-box-number">0</span>
+                </div>
+              </div>
+
+              <div class="info-box bg-light">
+                <span class="info-box-icon bg-success">
+                  <i class="fas fa-check-circle"></i>
+                </span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Cotações Aceitas</span>
+                  <span class="info-box-number">0</span>
+                </div>
+              </div>
+
+              <div class="info-box bg-light">
+                <span class="info-box-icon bg-warning">
+                  <i class="fas fa-percentage"></i>
+                </span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Taxa de Aprovação</span>
+                  <span class="info-box-number">0%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Quotes -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="fas fa-history mr-2"></i>Cotações Recentes</h3>
+            </div>
+            <div class="card-body">
+              <p class="text-muted text-center py-4">
+                <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                Nenhuma cotação encontrada para este fornecedor.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
