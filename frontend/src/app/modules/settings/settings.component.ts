@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
+import { SettingsService } from './settings.service';
 import { User } from '../../core/models/user.model';
 
 @Component({
@@ -33,7 +34,10 @@ export class SettingsComponent implements OnInit {
     statusChanges: true
   };
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private settingsService: SettingsService
+  ) { }
 
   ngOnInit() {
     this.authService.currentUser$.subscribe(user => {
@@ -42,6 +46,43 @@ export class SettingsComponent implements OnInit {
         this.profileForm.name = user.name;
         this.profileForm.email = user.email;
       }
+    });
+    this.loadWhatsappSettings();
+  }
+
+  // WhatsApp settings
+  whatsappConfig = {
+    whatsappProvider: 'whatsapp-js',
+    metaConfig: {
+      appId: '',
+      phoneNumberId: '',
+      accessToken: '',
+      verifyToken: ''
+    }
+  };
+
+  loadWhatsappSettings() {
+    this.settingsService.getIntegrationConfig().subscribe(config => {
+      if (config) {
+        this.whatsappConfig = {
+          whatsappProvider: config.whatsappProvider || 'whatsapp-js',
+          metaConfig: config.metaConfig || {
+            appId: '',
+            phoneNumberId: '',
+            accessToken: '',
+            verifyToken: ''
+          }
+        };
+      }
+    });
+  }
+
+  saveWhatsappSettings() {
+    this.settingsService.updateIntegrationConfig(this.whatsappConfig).subscribe(() => {
+      alert('Configurações do WhatsApp salvas com sucesso!');
+    }, error => {
+      console.error('Erro ao salvar configurações:', error);
+      alert('Erro ao salvar configurações.');
     });
   }
 

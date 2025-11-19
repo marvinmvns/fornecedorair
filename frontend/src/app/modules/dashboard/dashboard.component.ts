@@ -101,6 +101,13 @@ export class DashboardComponent implements OnInit {
 
   pieChartType: ChartType = 'pie';
 
+  infoBoxes = {
+    whatsappMessages: 0,
+    activeSuppliers: 0,
+    installers: 0,
+    products: 0
+  };
+
   constructor(private api: ApiService) {}
 
   ngOnInit() {
@@ -111,6 +118,11 @@ export class DashboardComponent implements OnInit {
     // Load stats from API
     this.api.getDashboardStats().subscribe(stats => {
       this.stats = stats;
+    });
+
+    // Load info boxes from API
+    this.api.getDashboardInfoBoxes().subscribe(infoBoxes => {
+      this.infoBoxes = infoBoxes;
     });
 
     // Load quotations timeline

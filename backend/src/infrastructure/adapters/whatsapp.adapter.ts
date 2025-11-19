@@ -1,38 +1,35 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import axios from 'axios';
+import { SettingsService } from '../../application/services/settings.service';
+import { WhatsappJsProvider } from './whatsapp/whatsapp-js.provider';
+import { MetaWhatsappProvider } from './whatsapp/meta-whatsapp.provider';
 
 @Injectable()
 export class WhatsappAdapter {
   private readonly logger = new Logger(WhatsappAdapter.name);
-  private readonly serviceUrl: string;
 
-  constructor(private configService: ConfigService) {
-    this.serviceUrl = this.configService.get<string>('WHATSAPP_SERVICE_URL', 'http://localhost:3001');
-  }
+  constructor(
+    private settingsService: SettingsService,
+    private whatsappJsProvider: WhatsappJsProvider,
+    private metaWhatsappProvider: MetaWhatsappProvider,
+  ) { }
 
   async sendMessage(to: string, message: string, context?: any): Promise<void> {
-    try {
-      const response = await axios.post(`${this.serviceUrl}/send`, {
-        to,
-        message,
-        context,
-      });
+    const config = await this.settingsService.getIntegrationConfig();
 
-      this.logger.log(`Message sent to ${to}: ${response.data.success}`);
-    } catch (error) {
-      this.logger.error(`Failed to send WhatsApp message to ${to}`, error.message);
-      throw error;
+    if (config.whatsappProvider === 'meta') {
+      return this.metaWhatsappProvider.sendMessage(to, message, context);
+    } else {
+      return this.whatsappJsProvider.sendMessage(to, message, context);
     }
   }
 
   async checkHealth(): Promise<boolean> {
-    try {
-      const response = await axios.get(`${this.serviceUrl}/health`);
-      return response.data.whatsapp === 'connected';
-    } catch (error) {
-      this.logger.error('WhatsApp service is not available', error.message);
-      return false;
+    const config = await this.settingsService.getIntegrationConfig();
+
+    if (config.whatsappProvider === 'meta') {
+      return this.metaWhatsappProvider.checkHealth();
+    } else {
+      return this.whatsappJsProvider.checkHealth();
     }
   }
 }

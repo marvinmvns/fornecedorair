@@ -22,22 +22,32 @@
           <div class="card-body p-0">
             <ul class="nav nav-pills flex-column">
               <li class="nav-item">
-                <a class="nav-link" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')" style="cursor: pointer;">
+                <a class="nav-link" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')"
+                  style="cursor: pointer;">
                   <i class="fas fa-user mr-2"></i> Perfil
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" [class.active]="activeTab === 'password'" (click)="setActiveTab('password')" style="cursor: pointer;">
+                <a class="nav-link" [class.active]="activeTab === 'password'" (click)="setActiveTab('password')"
+                  style="cursor: pointer;">
                   <i class="fas fa-lock mr-2"></i> Alterar Senha
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" [class.active]="activeTab === 'notifications'" (click)="setActiveTab('notifications')" style="cursor: pointer;">
+                <a class="nav-link" [class.active]="activeTab === 'notifications'"
+                  (click)="setActiveTab('notifications')" style="cursor: pointer;">
                   <i class="fas fa-bell mr-2"></i> Notificações
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" [class.active]="activeTab === 'system'" (click)="setActiveTab('system')" style="cursor: pointer;">
+                <a class="nav-link" [class.active]="activeTab === 'whatsapp'" (click)="setActiveTab('whatsapp')"
+                  style="cursor: pointer;">
+                  <i class="fab fa-whatsapp mr-2"></i> WhatsApp
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 'system'" (click)="setActiveTab('system')"
+                  style="cursor: pointer;">
                   <i class="fas fa-cogs mr-2"></i> Sistema
                 </a>
               </li>
@@ -60,7 +70,8 @@
               </div>
               <div class="form-group">
                 <label for="email">E-mail</label>
-                <input type="email" class="form-control" id="email" [(ngModel)]="profileForm.email" name="email" required readonly>
+                <input type="email" class="form-control" id="email" [(ngModel)]="profileForm.email" name="email"
+                  required readonly>
                 <small class="form-text text-muted">O e-mail não pode ser alterado.</small>
               </div>
               <div class="form-group" *ngIf="currentUser">
@@ -87,16 +98,19 @@
             <form (ngSubmit)="changePassword()">
               <div class="form-group">
                 <label for="currentPassword">Senha Atual</label>
-                <input type="password" class="form-control" id="currentPassword" [(ngModel)]="passwordForm.currentPassword" name="currentPassword" required>
+                <input type="password" class="form-control" id="currentPassword"
+                  [(ngModel)]="passwordForm.currentPassword" name="currentPassword" required>
               </div>
               <div class="form-group">
                 <label for="newPassword">Nova Senha</label>
-                <input type="password" class="form-control" id="newPassword" [(ngModel)]="passwordForm.newPassword" name="newPassword" required>
+                <input type="password" class="form-control" id="newPassword" [(ngModel)]="passwordForm.newPassword"
+                  name="newPassword" required>
                 <small class="form-text text-muted">Mínimo de 8 caracteres.</small>
               </div>
               <div class="form-group">
                 <label for="confirmPassword">Confirmar Nova Senha</label>
-                <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="passwordForm.confirmPassword" name="confirmPassword" required>
+                <input type="password" class="form-control" id="confirmPassword"
+                  [(ngModel)]="passwordForm.confirmPassword" name="confirmPassword" required>
               </div>
               <button type="submit" class="btn btn-primary">
                 <i class="fas fa-key mr-2"></i>Alterar Senha
@@ -113,7 +127,8 @@
           <div class="card-body">
             <div class="form-group">
               <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="emailNotifications" [(ngModel)]="notificationSettings.emailNotifications">
+                <input type="checkbox" class="custom-control-input" id="emailNotifications"
+                  [(ngModel)]="notificationSettings.emailNotifications">
                 <label class="custom-control-label" for="emailNotifications">
                   Receber notificações por e-mail
                 </label>
@@ -121,7 +136,8 @@
             </div>
             <div class="form-group">
               <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="whatsappNotifications" [(ngModel)]="notificationSettings.whatsappNotifications">
+                <input type="checkbox" class="custom-control-input" id="whatsappNotifications"
+                  [(ngModel)]="notificationSettings.whatsappNotifications">
                 <label class="custom-control-label" for="whatsappNotifications">
                   Receber notificações por WhatsApp
                 </label>
@@ -129,7 +145,8 @@
             </div>
             <div class="form-group">
               <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="newQuotations" [(ngModel)]="notificationSettings.newQuotations">
+                <input type="checkbox" class="custom-control-input" id="newQuotations"
+                  [(ngModel)]="notificationSettings.newQuotations">
                 <label class="custom-control-label" for="newQuotations">
                   Notificar sobre novas cotações
                 </label>
@@ -137,13 +154,68 @@
             </div>
             <div class="form-group">
               <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="statusChanges" [(ngModel)]="notificationSettings.statusChanges">
+                <input type="checkbox" class="custom-control-input" id="statusChanges"
+                  [(ngModel)]="notificationSettings.statusChanges">
                 <label class="custom-control-label" for="statusChanges">
                   Notificar sobre mudanças de status
                 </label>
               </div>
             </div>
             <button type="button" class="btn btn-primary" (click)="saveNotificationSettings()">
+              <i class="fas fa-save mr-2"></i>Salvar Configurações
+            </button>
+          </div>
+        </div>
+
+        <!-- WhatsApp Tab -->
+        <div class="card" *ngIf="activeTab === 'whatsapp'">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fab fa-whatsapp mr-2"></i>Configurações do WhatsApp</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label>Provedor</label>
+              <div class="custom-control custom-radio">
+                <input class="custom-control-input" type="radio" id="providerJs" name="whatsappProvider"
+                  [(ngModel)]="whatsappConfig.whatsappProvider" value="whatsapp-js">
+                <label for="providerJs" class="custom-control-label">WhatsApp-JS (Padrão)</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input class="custom-control-input" type="radio" id="providerMeta" name="whatsappProvider"
+                  [(ngModel)]="whatsappConfig.whatsappProvider" value="meta">
+                <label for="providerMeta" class="custom-control-label">Meta Cloud API</label>
+              </div>
+            </div>
+
+            <div *ngIf="whatsappConfig.whatsappProvider === 'meta'">
+              <div class="form-group">
+                <label for="appId">App ID</label>
+                <input type="text" class="form-control" id="appId" [(ngModel)]="whatsappConfig.metaConfig.appId">
+              </div>
+              <div class="form-group">
+                <label for="phoneNumberId">Phone Number ID</label>
+                <input type="text" class="form-control" id="phoneNumberId"
+                  [(ngModel)]="whatsappConfig.metaConfig.phoneNumberId">
+              </div>
+              <div class="form-group">
+                <label for="accessToken">Access Token</label>
+                <input type="password" class="form-control" id="accessToken"
+                  [(ngModel)]="whatsappConfig.metaConfig.accessToken">
+              </div>
+              <div class="form-group">
+                <label for="verifyToken">Webhook Verify Token</label>
+                <input type="text" class="form-control" id="verifyToken"
+                  [(ngModel)]="whatsappConfig.metaConfig.verifyToken">
+              </div>
+            </div>
+
+            <div *ngIf="whatsappConfig.whatsappProvider === 'whatsapp-js'" class="alert alert-info">
+              <i class="fas fa-info-circle mr-2"></i>
+              O WhatsApp-JS utiliza uma instância local do navegador para conectar. Certifique-se de que o serviço
+              auxiliar está rodando.
+            </div>
+
+            <button type="button" class="btn btn-primary" (click)="saveWhatsappSettings()">
               <i class="fas fa-save mr-2"></i>Salvar Configurações
             </button>
           </div>

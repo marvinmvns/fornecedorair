@@ -1,18 +1,9 @@
-import { Controller, Post, Body, Logger } from '@nestjs/common';
+import { Controller, Post, Body, Logger, Get, Query, ForbiddenException } from '@nestjs/common';
+import { SettingsService } from '../../application/services/settings.service';
 import { ChatService } from '../../application/services/chat.service';
 import { ChatGateway } from './chat.gateway';
 import { MessageSender, MessageType } from '../../domain/entities/message.entity';
-
-interface WhatsAppWebhookMessage {
-  from: string; // Phone number with country code (e.g., 5511999999999@c.us)
-  to: string;
-  body: string;
-  type: 'chat' | 'image' | 'document' | 'audio' | 'video';
-  messageId: string;
-  timestamp: number;
-  name?: string;
-  mediaUrl?: string;
-}
+import { MetaWebhookPayloadDto, MetaWebhookMessageDto, MetaWebhookContactDto } from './dto/meta-webhook.dto';
 
 @Controller('api/v1/webhooks/whatsapp')
 export class ChatWebhookController {
@@ -21,97 +12,94 @@ export class ChatWebhookController {
   constructor(
     private readonly chatService: ChatService,
     private readonly chatGateway: ChatGateway,
-  ) {}
+    private readonly settingsService: SettingsService,
+  ) { }
 
-  @Post('message')
-  async handleIncomingMessage(@Body() payload: WhatsAppWebhookMessage) {
+  @Get('meta')
+  async verifyMetaWebhook(@Query() query: any) {
+    const mode = query['hub.mode'];
+    const token = query['hub.verify_token'];
+    const challenge = query['hub.challenge'];
+
+    const config = await this.settingsService.getIntegrationConfig();
+    const verifyToken = config.metaConfig?.verifyToken;
+
+    if (mode === 'subscribe' && token === verifyToken) {
+      return challenge;
+    }
+    throw new ForbiddenException('Invalid verify token');
+  }
+
+  @Post('meta')
+  async handleMetaWebhook(@Body() payload: MetaWebhookPayloadDto) {
     try {
-      this.logger.log(`Received WhatsApp message from ${payload.from}`);
-
-      // Extract phone number from WhatsApp ID (remove @c.us suffix)
-      const contactNumber = payload.from.split('@')[0];
-      const contactName = payload.name || contactNumber;
-
-      // Find or create conversation
-      const conversation = await this.chatService.findOrCreateConversation(
-        contactNumber,
-        contactName,
-        payload.from, // whatsappChatId
-        'default-tenant-id', // TODO: Get tenant from config or context
-      );
-
-      // Map WhatsApp message type to our MessageType enum
-      let messageType: MessageType;
-      switch (payload.type) {
-        case 'image':
-          messageType = MessageType.IMAGE;
-          break;
-        case 'document':
-          messageType = MessageType.DOCUMENT;
-          break;
-        case 'audio':
-          messageType = MessageType.AUDIO;
-          break;
-        case 'video':
-          messageType = MessageType.VIDEO;
-          break;
-        default:
-          messageType = MessageType.TEXT;
+      if (payload.object === 'whatsapp_business_account') {
+        for (const entry of payload.entry) {
+          for (const change of entry.changes) {
+            if (change.value.messages) {
+              for (const message of change.value.messages) {
+                await this.processMetaMessage(message, change.value.contacts || []);
+              }
+            }
+          }
+        }
+        return { success: true };
       }
-
-      // Save message to database
-      const message = await this.chatService.createMessage({
-        conversationId: conversation.id,
-        content: payload.body,
-        sender: MessageSender.CONTACT,
-        senderName: contactName,
-        type: messageType,
-        whatsappMessageId: payload.messageId,
-        mediaUrl: payload.mediaUrl,
-      });
-
-      // Emit message via WebSocket to all connected clients
-      this.chatGateway.emitNewMessage(conversation.id, message);
-
-      // Update conversation with new message
-      this.chatGateway.emitConversationUpdate(conversation.id, {
-        lastMessage: {
-          content: payload.body,
-          timestamp: message.timestamp,
-          sender: MessageSender.CONTACT,
-        },
-      });
-
-      this.logger.log(`Message saved and emitted: ${message.id}`);
-
-      return { success: true, messageId: message.id };
     } catch (error) {
-      this.logger.error('Error processing WhatsApp message:', error);
+      this.logger.error('Error processing Meta webhook:', error);
       throw error;
     }
   }
 
-  @Post('status')
-  async handleMessageStatus(
-    @Body() payload: { messageId: string; status: 'sent' | 'delivered' | 'read' },
-  ) {
-    try {
-      this.logger.log(`Message ${payload.messageId} status: ${payload.status}`);
+  private async processMetaMessage(message: MetaWebhookMessageDto, contacts: MetaWebhookContactDto[]) {
+    const contactNumber = message.from;
+    const contactName = contacts?.find((c) => c.wa_id === contactNumber)?.profile?.name || contactNumber;
 
-      const message = await this.chatService.updateMessageStatusByWhatsappId(
-        payload.messageId,
-        payload.status as any,
-      );
+    // Find or create conversation
+    const conversation = await this.chatService.findOrCreateConversation(
+      contactNumber,
+      contactName,
+      contactNumber, // whatsappChatId
+      'default-tenant-id', // TODO: Get tenant
+    );
 
-      if (message) {
-        // Emit status update via WebSocket
-        this.chatGateway.emitMessageStatusUpdate(message.id, payload.status);
-      }
+    let messageType: MessageType = MessageType.TEXT;
+    let content = '';
+    let mediaUrl = '';
 
-      return { success: true };
-    } catch (error) {
-      this.logger.error('Error updating message status:', error);
-      throw error;
+    switch (message.type) {
+      case 'text':
+        messageType = MessageType.TEXT;
+        content = message.text?.body || '';
+        break;
+      case 'image':
+        messageType = MessageType.IMAGE;
+        mediaUrl = message.image?.id || '';
+        content = message.image?.caption || '';
+        break;
+      default:
+        content = `[Unsupported message type: ${message.type}]`;
     }
+
+    // Save message
+    const savedMessage = await this.chatService.createMessage({
+      conversationId: conversation.id,
+      content: content,
+      sender: MessageSender.CONTACT,
+      senderName: contactName,
+      type: messageType,
+      whatsappMessageId: message.id,
+      mediaUrl: mediaUrl,
+    });
+
+    // Emit
+    this.chatGateway.emitNewMessage(conversation.id, savedMessage);
+    this.chatGateway.emitConversationUpdate(conversation.id, {
+      lastMessage: {
+        content: content,
+        timestamp: savedMessage.timestamp,
+        sender: MessageSender.CONTACT,
+      },
+    });
   }
 }

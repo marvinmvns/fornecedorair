@@ -110,12 +110,12 @@ Este arquivo lista todos os dados que precisam ser implementados na API para que
 
 ### Alta Prioridade
 1. ✅ `GET /api/v1/quotations` - Últimas cotações (já existe)
-2. 🔴 `GET /api/v1/dashboard/stats` - Estatísticas gerais
-3. 🔴 `GET /api/v1/dashboard/quotations-by-status` - Distribuição por status
+2. ✅ `GET /api/v1/dashboard/stats` - Estatísticas gerais
+3. ✅ `GET /api/v1/dashboard/quotations-by-status` - Distribuição por status
 
 ### Média Prioridade
-4. 🟡 `GET /api/v1/dashboard/quotations-timeline` - Gráfico de linha
-5. 🟡 `GET /api/v1/dashboard/info-boxes` - Info boxes
+4. ✅ `GET /api/v1/dashboard/quotations-timeline` - Gráfico de linha
+5. ✅ `GET /api/v1/dashboard/info-boxes` - Info boxes
 
 ---
 
@@ -168,16 +168,16 @@ Enquanto os endpoints não estão implementados, o frontend está usando:
 
 ## ✅ Checklist de Implementação
 
-- [ ] Criar DashboardController
-- [ ] Criar DashboardService
-- [ ] Implementar GET /api/v1/dashboard/stats
-- [ ] Implementar GET /api/v1/dashboard/info-boxes
-- [ ] Implementar GET /api/v1/dashboard/quotations-timeline
-- [ ] Implementar GET /api/v1/dashboard/quotations-by-status
-- [ ] Adicionar guards e roles necessários
-- [ ] Testar endpoints com Postman/Insomnia
-- [ ] Atualizar frontend para consumir os novos endpoints
-- [ ] Remover dados mock do frontend
+- [x] Criar DashboardController
+- [x] Criar DashboardService
+- [x] Implementar GET /api/v1/dashboard/stats
+- [x] Implementar GET /api/v1/dashboard/info-boxes
+- [x] Implementar GET /api/v1/dashboard/quotations-timeline
+- [x] Implementar GET /api/v1/dashboard/quotations-by-status
+- [x] Adicionar guards e roles necessários
+- [x] Testar endpoints com Postman/Insomnia
+- [x] Atualizar frontend para consumir os novos endpoints
+- [x] Remover dados mock do frontend
 
 ---
 
